@@ -21,18 +21,18 @@ Player class >> named: aName [
 	^ self name: aName
 ]
 
-{ #category : #'instance creation' }
+{ #category : #playing }
 Player >> advancePosition [
-	position := position + rollNumber.
+	^ position := position + rollNumber.
 ]
 
-{ #category : #'instance creation' }
+{ #category : #initialization }
 Player >> named: aName [
 	position := 0.
 	name := aName.
 ]
 
-{ #category : #'instance creation' }
+{ #category : #playing }
 Player >> roll: diceCollection [
 	rollNumber := diceCollection sumNumbers: [ :dice | dice roll ].
 	^ rollNumber
