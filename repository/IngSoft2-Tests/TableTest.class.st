@@ -1,13 +1,12 @@
 Class {
-	#name : #TestTable,
+	#name : #TableTest,
 	#superclass : #TestCase,
 	#category : #'IngSoft2-Tests'
 }
 
 { #category : #tests }
-TestTable >> testCreatingTable [
+TableTest >> testCreatingTable [
 	 |table|
-	table := Table withSize: 100.
+	table := Table sized: 100.
 	self assert: table positions equals: 100.
-	
 ]
