@@ -25,7 +25,7 @@ Dice >> initializeWithNumberOfFaces: aNumberOfFaces AndStrategy: aStrategy [
 	strategy := aStrategy.
 ]
 
-{ #category : #initialization }
+{ #category : #playing }
 Dice >> roll [
 	^ strategy next:quantityFaces
 ]
