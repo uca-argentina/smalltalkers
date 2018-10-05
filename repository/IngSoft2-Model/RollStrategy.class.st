@@ -6,5 +6,5 @@ Class {
 
 { #category : #accessing }
 RollStrategy >> next [
-	self subclassResponsibility.
+	self subclassResponsibility
 ]
