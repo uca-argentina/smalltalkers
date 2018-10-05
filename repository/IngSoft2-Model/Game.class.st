@@ -2,45 +2,46 @@ Class {
 	#name : #Game,
 	#superclass : #Object,
 	#instVars : [
-		'table',
+		'board',
 		'players',
 		'diceCollection',
-		'finish',
-		'name',
-		'winner'
+		'winner',
+		'turn'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #initialization }
-Game class >> playedBy: aPlayerSet onBoardOfLenght: aBoardLenght withSetOfDices: diceCollection [
-	^ self new initializeWithPlayers: aPlayerSet OnBoardLenght: aBoardLenght withDices: diceCollection
-]
-
-{ #category : #initialization }
-Game >> initializeWithPlayers: aPlayerSet OnBoardLenght: aBoardLenght withDices:aDiceCollection [
-	|ranking|
-	finish := false.
-	ranking := SortedCollection sortBlock: [ :p1 :p2 | p1 position >= p2 position ].
-	players := aPlayerSet.
-	diceCollection :=aDiceCollection.
-	table := Table size: aBoardLenght.
+Game class >> playedBy: players onBoardLenght: aBoardLenght withDices: diceCollection [
+	^ self new initializeWithPlayers: players OnBoardLenght: aBoardLenght withDices: diceCollection
 ]
 
 { #category : #playing }
-Game >> play [
-	1 to: players size do: [ :i | 
-		finish == false
-			ifTrue: [ (players at: i) roll.
-				(players at: i) advancePosition.
-				(players at: i) position >= table positions
-					ifTrue: [ finish := true.
-						winner:= (players at: i) name ] ] ]
+Game >> changeTurn: nextPlayer [
+	(turn == nextPlayer)
+		ifTrue:[AssertionFailure signal: 'You need to change the player'].
+	winner size > 0
+		ifTrue: [ AssertionFailure signal:'You cant change turn because game has finished' ]
+		ifFalse: [ ^ turn := nextPlayer ]
+]
+
+{ #category : #accessing }
+Game >> finished [
+	winner := players select: [ :each | each position >= board positions ].
+	winner size > 0
+		ifTrue: [ ^ winner at: 1 ]
+		ifFalse: [ ^ false ]
+]
+
+{ #category : #initialization }
+Game >> initializeWithPlayers: playersCollection OnBoardLenght: aBoardLenght withDices: aDiceCollection [
+	players := playersCollection.
+	diceCollection := aDiceCollection.
+	board := Board sized: aBoardLenght.
+	turn := players at: 1
 ]
 
 { #category : #accessing }
 Game >> rankPlayers [
-	|ranking|
-	ranking addAll: players.
-	^ ranking
+	^ board rankPlayers: players
 ]

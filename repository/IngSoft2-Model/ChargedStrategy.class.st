@@ -16,11 +16,11 @@ ChargedStrategy class >> withSequence: aSequence [
 { #category : #initialization }
 ChargedStrategy >> initializeWithSequence: aSequence [
 	sequence := aSequence.
-	nextPosition := 1.
+	nextPosition := 1
 ]
 
 { #category : #accessing }
-ChargedStrategy >> next: aQuantityFace [
+ChargedStrategy >> next: aQuantityOfFaces [
 	| previousPosition |
 	nextPosition > sequence size
 		ifTrue: [ nextPosition := 1 ].

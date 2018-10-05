@@ -10,7 +10,8 @@ Class {
 
 { #category : #asserting }
 Player class >> assertWithValidName: aName [
-	(aName size <= 0)	 ifTrue: [ AssertionFailure signal:'You cant create a player without a name' ].
+	aName size <= 0
+		ifTrue: [ AssertionFailure signal: 'You cant create a player without a name' ]
 ]
 
 { #category : #initialization }
@@ -21,17 +22,24 @@ Player class >> named: aName [
 
 { #category : #playing }
 Player >> advancePosition: aRollNumber [
-	^ position := position + aRollNumber.
+	^ position := position + aRollNumber
 ]
 
 { #category : #initialization }
 Player >> named: aName [
 	position := 0.
-	name := aName.
+	name := aName
+]
+
+{ #category : #accessing }
+Player >> position [
+	^ position
 ]
 
 { #category : #playing }
 Player >> roll: diceCollection [
+	| rollNumber |
 	rollNumber := diceCollection sumNumbers: [ :dice | dice roll ].
+	self advancePosition: rollNumber.
 	^ rollNumber
 ]

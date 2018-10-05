@@ -10,7 +10,8 @@ Class {
 
 { #category : #asserting }
 Dice class >> assertValidDiceValue: aValue [
-	(aValue <3) ifTrue: [AssertionFailure signal: 'A dice must have 3 or more faces']
+	aValue < 3
+		ifTrue: [ AssertionFailure signal: 'A dice must have 3 or more faces' ]
 ]
 
 { #category : #initialization }
@@ -22,10 +23,10 @@ Dice class >> faces: aFacesNumber withStrategy: aStrategy [
 { #category : #initialization }
 Dice >> initializeWithNumberOfFaces: aNumberOfFaces AndStrategy: aStrategy [
 	quantityFaces := aNumberOfFaces.
-	strategy := aStrategy.
+	strategy := aStrategy
 ]
 
 { #category : #playing }
 Dice >> roll [
-	^ strategy next:quantityFaces
+	^ strategy next: quantityFaces
 ]
