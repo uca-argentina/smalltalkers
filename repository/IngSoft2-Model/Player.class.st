@@ -17,7 +17,7 @@ Player class >> assertWithValidName: aName [
 { #category : #initialization }
 Player class >> named: aName [
 	self assertWithValidName: aName.
-	^ self new named: aName
+	^ self new initializeWithName: aName
 ]
 
 { #category : #playing }
@@ -26,9 +26,14 @@ Player >> advancePosition: aRollNumber [
 ]
 
 { #category : #initialization }
-Player >> named: aName [
+Player >> initializeWithName: aName [
 	position := 0.
 	name := aName
+]
+
+{ #category : #accessing }
+Player >> named [
+	^ name
 ]
 
 { #category : #accessing }

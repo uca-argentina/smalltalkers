@@ -6,42 +6,59 @@ Class {
 		'players',
 		'diceCollection',
 		'winner',
-		'turn'
+		'turn',
+		'turnPosition',
+		'order'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #initialization }
-Game class >> playedBy: players onBoardLenght: aBoardLenght withDices: diceCollection [
-	^ self new initializeWithPlayers: players OnBoardLenght: aBoardLenght withDices: diceCollection
+Game class >> playedBy: players onBoard: aBoard withDices: diceCollection [
+	^ self new initializeWithPlayers: players onBoard: aBoard withDices: diceCollection
 ]
 
 { #category : #playing }
-Game >> changeTurn: nextPlayer [
-	(turn == nextPlayer)
-		ifTrue:[AssertionFailure signal: 'You need to change the player'].
-	winner size > 0
-		ifTrue: [ AssertionFailure signal:'You cant change turn because game has finished' ]
-		ifFalse: [ ^ turn := nextPlayer ]
+Game >> changeTurn [
+	order := order + 1.
+	order > players size
+		ifTrue: [ order := 1 ].
+	turn := players at: order
 ]
 
 { #category : #accessing }
 Game >> finished [
-	winner := players select: [ :each | each position >= board positions ].
+	winner := players select: [ :each | each position >= board length].
 	winner size > 0
 		ifTrue: [ ^ winner at: 1 ]
 		ifFalse: [ ^ false ]
 ]
 
 { #category : #initialization }
-Game >> initializeWithPlayers: playersCollection OnBoardLenght: aBoardLenght withDices: aDiceCollection [
+Game >> initializeWithPlayers: playersCollection onBoard: aBoard withDices: aDiceCollection [
 	players := playersCollection.
 	diceCollection := aDiceCollection.
-	board := Board sized: aBoardLenght.
-	turn := players at: 1
+	board := aBoard.
+	turn := players at: 1.
+	order := 1.
+]
+
+{ #category : #playing }
+Game >> play: aPlayerName [
+	| player |
+	player := players detect: [ :each | each named = aPlayerName ].
+	turn = player 
+		ifTrue: [ player roll:diceCollection.
+			self changeTurn  ]
+		ifFalse:[AssertionFailure signal:'it is not your turn'].
 ]
 
 { #category : #accessing }
 Game >> rankPlayers [
-	^ board rankPlayers: players
+	^ players asSortedCollection: [ :p1 :p2 | p1 position >= p2 position ]
+]
+
+{ #category : #accessing }
+Game >> turn [
+	^ turn
 ]
