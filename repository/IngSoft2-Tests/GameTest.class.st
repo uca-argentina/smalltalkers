@@ -63,19 +63,19 @@ GameTest >> testPlayingGame [
 		add: fran.
 	board := Board length: 10.
 	game := Game playedBy: players onBoard: board withDices: diceCollection.
-	game play: 'Rodri'.
+	game play: rodri.
 	self assert: rodri position equals: 3.
 	self assert: game finished equals: false.
 	self assert: (game turn) = fran.
-	game play: 'Fran'.
+	game play: fran.
 	self assert: fran position equals: 7.
 	self assert: game finished equals: false.
 	self assert: (game turn) equals: rodri.
-	game play: 'Rodri'.
+	game play: rodri.
 	self assert: rodri position equals: 6.
 	self assert: game finished equals: false.
 	self assert: (game turn) equals: fran.
-	game play:'Fran'.
+	game play: fran.
 	self assert: fran position equals: 14.
 	self assert: game finished equals: fran.
 	ranking:=game rankPlayers.

@@ -6,7 +6,7 @@ Class {
 		'players',
 		'diceCollection',
 		'winner',
-		'turn',
+		'turnPlayer',
 		'turnPosition',
 		'order'
 	],
@@ -23,7 +23,7 @@ Game >> changeTurn [
 	order := order + 1.
 	order > players size
 		ifTrue: [ order := 1 ].
-	turn := players at: order
+	turnPlayer := players at: order
 ]
 
 { #category : #accessing }
@@ -39,16 +39,14 @@ Game >> initializeWithPlayers: playersCollection onBoard: aBoard withDices: aDic
 	players := playersCollection.
 	diceCollection := aDiceCollection.
 	board := aBoard.
-	turn := players at: 1.
+	turnPlayer := players at: 1.
 	order := 1.
 ]
 
 { #category : #playing }
-Game >> play: aPlayerName [
-	| player |
-	player := players detect: [ :each | each named = aPlayerName ].
-	turn = player 
-		ifTrue: [ player roll:diceCollection.
+Game >> play: aPlayer [
+	turnPlayer = aPlayer 
+		ifTrue: [ aPlayer roll:diceCollection.
 			self changeTurn  ]
 		ifFalse:[AssertionFailure signal:'it is not your turn'].
 ]
@@ -60,5 +58,5 @@ Game >> rankPlayers [
 
 { #category : #accessing }
 Game >> turn [
-	^ turn
+	^ turnPlayer
 ]
