@@ -2,8 +2,7 @@ Class {
 	#name : #Player,
 	#superclass : #Object,
 	#instVars : [
-		'name',
-		'position'
+		'name'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -20,14 +19,8 @@ Player class >> named: aName [
 	^ self new initializeWithName: aName
 ]
 
-{ #category : #playing }
-Player >> advancePosition: aRollNumber [
-	^ position := position + aRollNumber
-]
-
 { #category : #initialization }
 Player >> initializeWithName: aName [
-	position := 0.
 	name := aName
 ]
 
@@ -36,15 +29,9 @@ Player >> named [
 	^ name
 ]
 
-{ #category : #accessing }
-Player >> position [
-	^ position
-]
-
 { #category : #playing }
 Player >> roll: diceCollection [
 	| rollNumber |
 	rollNumber := diceCollection sumNumbers: [ :dice | dice roll ].
-	self advancePosition: rollNumber.
 	^ rollNumber
 ]
