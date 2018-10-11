@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #tests }
-PlayerTest >> testPlayerRollAndAdvance [
+PlayerTest >> testPlayerRoll [
 	| dice diceCollection player chargedStrategy |
 	chargedStrategy := ChargedStrategy withSequence: #(1 2 3 4).
 	dice := Dice faces: 6 withStrategy: chargedStrategy.
@@ -13,12 +13,7 @@ PlayerTest >> testPlayerRollAndAdvance [
 	diceCollection add: dice.
 	diceCollection add: dice.
 	player := Player named: 'Rodri'.
-	player roll: diceCollection.
-	self assert: player position equals: 3.
-	player roll: diceCollection.
-	self assert: player position equals: 10.
-	player roll: diceCollection.
-	self assert: player position equals: 13.
-	player roll: diceCollection.
-	self assert: player position equals: 20
+	self assert: (player roll: diceCollection) equals:  3.
+	self assert: (player roll: diceCollection) equals:  7.
+	
 ]
