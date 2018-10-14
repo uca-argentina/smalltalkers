@@ -6,9 +6,9 @@ Class {
 
 { #category : #tests }
 DiceTest >> testDiceCreationInstanceAndRoll [
-	|chargedStrategy dice|
-	chargedStrategy := ChargedStrategy withSequence: #(1 2 4 5).
-	dice:= Dice faces:5 withStrategy: chargedStrategy.
+	|chargedstrategy dice|
+	chargedstrategy := ChargedStrategy withSequence: #(1 2 4 5).
+	dice:= Dice faces:5 withStrategy: chargedstrategy.
 	self assert: dice roll equals:1.
 	self assert: dice roll equals:2.
 	self assert: dice roll equals:4.
