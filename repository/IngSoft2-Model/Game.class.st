@@ -22,6 +22,13 @@ Game class >> playedBy: players onBoard: aBoard withDices: diceCollection withWi
 	^ self new initializeWithPlayers: players onBoard: aBoard withDices: diceCollection withWinningLaps: aNumber
 ]
 
+{ #category : #playing }
+Game >> advanced: aPlayer [
+	self player: aPlayer advance: (aPlayer roll: diceCollection).
+	self changeTurn.
+	self board activeEffect: self to: aPlayer
+]
+
 { #category : #accessing }
 Game >> board [
 	^ board
@@ -55,15 +62,16 @@ Game >> initializeWithPlayers: playersCollection onBoard: aBoard withDices: aDic
 	players do: [ :player | playersPositions at: player put: 0 ].
 	playersLaps := Dictionary new.
 	players do: [ :player | playersLaps at: player put: 0 ].
-	playerScore := Dictionary new
+	playerScore := Dictionary new.
+	players do: [ :player | playerScore at: player put: 0 ]
 ]
 
 { #category : #accessing }
 Game >> lapsOf: aPlayer [
-	^ playersLaps at: aPlayer
+	^ playersLaps at: aPlayer ifAbsentPut: [0]
 ]
 
-{ #category : #accessing }
+{ #category : #playing }
 Game >> makeScoreOfPlayers [
 	| lapScore finalScore positionScore |
 	players
@@ -76,26 +84,30 @@ Game >> makeScoreOfPlayers [
 
 { #category : #playing }
 Game >> play: aPlayer [
+	self finished = false
+		ifFalse: [ AssertionFailure signal: 'You cannot play because the game is finished' ].
 	turnPlayer = aPlayer
-		ifTrue: [ self player: aPlayer advance: (aPlayer roll: diceCollection).
-			self changeTurn.
-			self board activeEffect: self to: aPlayer ]
+		ifTrue: [ self advanced: aPlayer ]
 		ifFalse: [ AssertionFailure signal: 'it is not your turn' ]
 ]
 
 { #category : #playing }
 Game >> player: aPlayer advance: aNumber [
-	| actualPosition actualLaps |
-	actualPosition := playersPositions at: aPlayer.
-	actualLaps := playersLaps at: aPlayer.
-	actualPosition + aNumber <= 0
-		ifTrue: [ playersPositions at: aPlayer put: 0 ]
-		ifFalse: [ playersPositions at: aPlayer put: actualPosition + aNumber ].
-	(playersPositions at: aPlayer) > board length
-		ifFalse: [ ^ self ].
-	actualPosition := playersPositions at: aPlayer.
-	playersPositions at: aPlayer put: actualPosition - board length.
-	playersLaps at: aPlayer put: actualLaps + 1
+	| actualposition actuallaps advancenumber |
+	actualposition := playersPositions at: aPlayer.
+	actuallaps := playersLaps at: aPlayer.
+	advancenumber := actualposition + aNumber.
+	advancenumber < 0 & (actuallaps = 0)
+		ifTrue: [ advancenumber := 0.
+			actuallaps := 0 ].
+	advancenumber < 0 & (actuallaps >= 1)
+		ifTrue: [ advancenumber := board length + actualposition + aNumber.
+			actuallaps := actuallaps - 1 ].
+	advancenumber > board length
+		ifTrue: [ advancenumber := advancenumber - board length.
+			actuallaps := actuallaps + 1 ].
+	playersPositions at: aPlayer put: advancenumber.
+	playersLaps at: aPlayer put: actuallaps
 ]
 
 { #category : #accessing }
@@ -116,7 +128,7 @@ Game >> rankPlayers [
 
 { #category : #accessing }
 Game >> scoreOf: aPlayer [
-	^ playerScore at: aPlayer
+	^ playerScore at: aPlayer ifAbsentPut: [0]
 ]
 
 { #category : #accessing }
