@@ -71,14 +71,13 @@ GameTest >> testInstanceCreationGameAndAccesing [
 
 { #category : #tests }
 GameTest >> testPlayingGameWithoutEffects [
-	| rodri fran game players speedup wormhole effectsequence ranking|
+	| rodri fran game players speedup wormhole effectsequence ranking withouteffect |
 	speedup := SpeedUp new.
 	wormhole := WormHole new.
+	withouteffect:= WithoutEffect new.
 	effectsequence := OrderedCollection new.
 	effectsequence
-		add: wormhole;
-		add: wormhole;
-		add: speedup.
+		add: withouteffect.
 	players := OrderedCollection new.
 	rodri := Player named: 'Rodri'.
 	fran := Player named: 'Fran'.
