@@ -71,13 +71,10 @@ GameTest >> testInstanceCreationGameAndAccesing [
 
 { #category : #tests }
 GameTest >> testPlayingGameWithoutEffects [
-	| rodri fran game players speedup wormhole effectsequence ranking withouteffect |
-	speedup := SpeedUp new.
-	wormhole := WormHole new.
-	withouteffect:= WithoutEffect new.
+	| rodri fran game players effectsequence ranking withouteffect |
+	withouteffect := WithoutEffect new.
 	effectsequence := OrderedCollection new.
-	effectsequence
-		add: withouteffect.
+	effectsequence add: withouteffect.
 	players := OrderedCollection new.
 	rodri := Player named: 'Rodri'.
 	fran := Player named: 'Fran'.
@@ -85,7 +82,8 @@ GameTest >> testPlayingGameWithoutEffects [
 	players
 		add: rodri;
 		add: fran.
-	game := self intializeGame: players withDiceSequence: #(1 3 5 7) andEffectSequence: effectsequence.	game play: rodri.
+	game := self intializeGame: players withDiceSequence: #(1 3 5 7) andEffectSequence: effectsequence.
+	game play: rodri.
 	self assert: (game positionOf: rodri) equals: 4.
 	self assert: game finished equals: false.
 	self assert: game turn equals: fran.
@@ -106,6 +104,7 @@ GameTest >> testPlayingGameWithoutEffects [
 	self assert: game finished equals: false.
 	self assert: game turn equals: fran.
 	game play: fran.
+	self should: [ game play: rodri ] raise: AssertionFailure .
 	self assert: (game positionOf: fran) equals: 6.
 	self assert: game finished equals: fran.
 	self assert: (game lapsOf: fran) equals: 1.
