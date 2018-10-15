@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #adding }
-EffectStrategy >> addEffects: length [
+{ #category : #accessing }
+EffectStrategy >> nextEffect [
 	self subclassResponsibility
 ]

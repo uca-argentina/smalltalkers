@@ -6,11 +6,11 @@ Class {
 
 { #category : #tests }
 ChargedStrategyTest >> testChargedStrategyCreationAndAccesing [
-	| sequence chargedStrategy |
+	| sequence chargedstrategy |
 	sequence := #(4 5 6).
-	chargedStrategy := ChargedStrategy withSequence: sequence.
-	self assert: (chargedStrategy next: 6) equals: 4.
-	self assert: (chargedStrategy next: 6) equals: 5.
-	self assert: (chargedStrategy next: 6) equals: 6.
-	self assert: (chargedStrategy next: 6) equals: 4
+	chargedstrategy := ChargedStrategy withSequence: sequence.
+	self assert: (chargedstrategy next: 6) equals: 4.
+	self assert: (chargedstrategy next: 6) equals: 5.
+	self assert: (chargedstrategy next: 6) equals: 6.
+	self assert: (chargedstrategy next: 6) equals: 4
 ]

@@ -5,6 +5,6 @@ Class {
 }
 
 { #category : #accessing }
-RollStrategy >> next [
+RollStrategy >> next: aQuantityOfFaces [
 	self subclassResponsibility
 ]
