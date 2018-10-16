@@ -23,7 +23,7 @@ ChargedEffectStrategy >> initializeWithSequence: aSequence [
 ChargedEffectStrategy >> nextEffect [
 	| previousPosition |
 	nextPosition > sequence size
-		ifTrue: [ nextPosition := 1 ].
+		ifTrue: [ nextPosition := 1. ].
 	previousPosition := nextPosition.
 	nextPosition := nextPosition + 1.
 	^ sequence at: previousPosition

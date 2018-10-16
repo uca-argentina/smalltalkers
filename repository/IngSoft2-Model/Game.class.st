@@ -25,8 +25,8 @@ Game class >> playedBy: players onBoard: aBoard withDices: diceCollection withWi
 { #category : #playing }
 Game >> advanced: aPlayer [
 	self player: aPlayer advance: (aPlayer roll: diceCollection).
-	self changeTurn.
-	self board activeEffect: self to: aPlayer
+	self board activeEffect: self to: aPlayer.
+	self changeTurn
 ]
 
 { #category : #accessing }
