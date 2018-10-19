@@ -24,11 +24,6 @@ Player >> initializeWithName: aName [
 	name := aName
 ]
 
-{ #category : #accessing }
-Player >> named [
-	^ name
-]
-
 { #category : #playing }
 Player >> roll: diceCollection [
 	| rollNumber |

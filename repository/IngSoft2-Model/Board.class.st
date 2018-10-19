@@ -3,7 +3,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'length',
-		'strategy'
+		'effects'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -15,29 +15,30 @@ Board class >> assertWithValidValueOfLength: aValue [
 ]
 
 { #category : #initialization }
-Board class >> length: aLenght andStrategy: aStrategy [
-	self assertWithValidValueOfLength: aLenght.
-	^ self new initializeWithLength: aLenght andStrategy: aStrategy
+Board class >> effects: effectsCollection [
+	self assertWithValidValueOfLength: effectsCollection size.
+	^ self new initializeWithEffects: effectsCollection
 ]
 
 { #category : #playing }
 Board >> activeEffect: aGame to: aPlayer [
-	strategy nextEffect apply: aGame to: aPlayer
+	(self effect: (aGame positionOf: aPlayer)) apply: aGame to: aPlayer
+
 ]
 
 { #category : #initialization }
-Board >> initializeWithLength: aLength andStrategy: aStrategy [
-	length := aLength.
-	strategy := aStrategy.
+Board >> effect: aPosition [
+	^ effects at: (aPosition + 1)
+]
+
+{ #category : #initialization }
+Board >> initializeWithEffects: effectsCollection [
+	length := effectsCollection size.
+	effects  := effectsCollection.
 	
 ]
 
 { #category : #accessing }
 Board >> length [
 	^ length
-]
-
-{ #category : #accessing }
-Board >> strategy [
-	^ strategy
 ]
