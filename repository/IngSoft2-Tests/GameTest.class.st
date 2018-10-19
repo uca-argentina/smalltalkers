@@ -112,7 +112,7 @@ GameTest >> testInstanceCreationGameAndAccesing [
 		add: wormHole;
 		add: speedUp.
 	game := self gamedWithDiceSequence:#(1 3 5 7)  andEffectSequence: effectSequence .
-	self assert: game finished equals: false
+	self assert: game hasEnded equals: false
 ]
 
 { #category : #tests }
@@ -141,12 +141,12 @@ GameTest >> testPlayingGameWithEffects [
 	game play: rodri.
 	self assert: (game positionOf: rodri) equals: 4.
 	self assert: (game lapsOf: rodri) equals: 1.
-	self assert: game finished equals: false.
+	self assert: game hasEnded equals: false.
 	self assert: game turn equals: fran.
 	game play: fran.
 	self assert: (game positionOf: fran) equals: 4.
 	self assert: (game positionOf: rodri) equals: 2.
-	self assert: game finished equals: false.
+	self assert: game hasEnded equals: false.
 	self assert: (game lapsOf: fran) equals: 0.
 	self assert: (game lapsOf: rodri) equals: 1.
 	self assert: game turn equals: rodri.
@@ -155,8 +155,8 @@ GameTest >> testPlayingGameWithEffects [
 	self assert: (game positionOf: fran) equals: 3.
 	self assert: (game lapsOf: fran) equals: 0.
 	self assert: (game lapsOf: rodri) equals: 2.
-	self assert: game finished equals: rodri.
-	self should: [ game play: fran ] raise: AssertionFailure.
+	self assert: game hasEnded equals: true.
+	self assert: game winner equals: rodri.
 	ranking := game rankPlayers.
 	self assert: (ranking at: 1) equals: rodri.
 	self assert: (ranking at: 2) equals: fran.
@@ -184,23 +184,24 @@ GameTest >> testPlayingGameWithoutEffects [
 	self assert: game board length equals: 10.
 	game play: rodri.
 	self assert: (game positionOf: rodri) equals: 8.
-	self assert: game finished equals: false.
+	self assert: game hasEnded equals: false.
 	self assert: game turn equals: fran.
 	game play: fran.
 	self assert: (game positionOf: fran) equals: 2.
-	self assert: game finished equals: false.
+	self assert: game hasEnded equals: false.
 	self assert: game turn equals: rodri.
 	game play: rodri.
 	self assert: (game positionOf: rodri) equals: 6.
 	self assert: (game lapsOf: rodri) equals: 1.
-	self assert: game finished equals: false.
+	self assert: game hasEnded equals: false.
 	self assert: game turn equals: fran.
+	self should: [ game play: rodri ] raise: AssertionFailure.
 	game play: fran.
 	self assert: (game positionOf: fran) equals: 4.
 	self assert: (game lapsOf: fran) equals: 2.
 	self assert: game turn equals: rodri.
-	self should: [ game play: rodri ] raise: AssertionFailure.
-	self assert: game finished equals: fran.
+	self assert: game hasEnded equals: true.
+	self assert: game winner equals: fran.
 	ranking := game rankPlayers.
 	self assert: (ranking at: 1) equals: fran.
 	self assert: (ranking at: 2) equals: rodri.
