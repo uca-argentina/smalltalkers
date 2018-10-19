@@ -1,46 +1,99 @@
 Class {
 	#name : #GameTest,
 	#superclass : #TestCase,
+	#instVars : [
+		'rodri',
+		'fran',
+		'players',
+		'dice',
+		'chargedStrategy',
+		'diceCollection'
+	],
 	#category : #'IngSoft2-Tests'
 }
 
 { #category : #tests }
-GameTest >> intializeGame: players withDiceSequence: diceSequence andEffectSequence: effectSequence [
-	| chargedstrategy dice dicecollection board game strategy |
-	chargedstrategy := ChargedStrategy withSequence: diceSequence.
-	strategy := ChargedEffectStrategy withSequence: effectSequence.
-	dice := Dice faces: 4 withStrategy: chargedstrategy.
-	dicecollection := OrderedCollection new.
-	dicecollection
+GameTest >> gamedWithDiceSequence: diceSequence andEffectSequence: effectSequence [
+	|game board |
+	chargedStrategy := ChargedStrategy withSequence: diceSequence.
+	dice := Dice faces: 4 withStrategy: chargedStrategy.
+	diceCollection := OrderedCollection new.
+	diceCollection
 		add: dice;
 		add: dice.
-	board := Board length: 20 andStrategy: strategy.
+	board := Board effects: effectSequence.
 	game := Game
 		playedBy: players
 		onBoard: board
-		withDices: dicecollection
+		withDices: diceCollection
 		withWinningLaps: 2.
 	^ game
 ]
 
 { #category : #tests }
-GameTest >> testChangingTurn [
-	| rodri fran game players speedup wormhole effectsequence |
-	speedup := SpeedUp new.
-	wormhole := WormHole new.
-	effectsequence := OrderedCollection new.
-	effectsequence
-		add: wormhole;
-		add: wormhole;
-		add: speedup.
-	players := OrderedCollection new.
+GameTest >> setUp [
 	rodri := Player named: 'Rodri'.
 	fran := Player named: 'Fran'.
 	players := OrderedCollection new.
 	players
 		add: rodri;
 		add: fran.
-	game := self intializeGame: players withDiceSequence: #(1 3 5 7) andEffectSequence: effectsequence.
+
+]
+
+{ #category : #tests }
+GameTest >> testAdvancePlayer [
+	| speedUp wormHole effectSequence game |
+	speedUp := SpeedUp new.
+	wormHole := WormHole new.
+	effectSequence := OrderedCollection new.
+	effectSequence
+		add: wormHole;
+		add: wormHole;
+		add: speedUp.
+	game := self gamedWithDiceSequence: #(1 2 3 4) andEffectSequence: effectSequence.
+	self assert: (game positionOf: rodri) equals: 0.
+	game player: rodri advance: 5.
+	self assert: (game positionOf: rodri) equals: 2.
+	self assert: (game lapsOf: rodri) equals: 1.
+	game player: rodri advance: 2.
+	self assert: (game positionOf: rodri) equals: 1.
+	self assert: (game lapsOf: rodri) equals: 2.
+	game player: rodri advance: 1.
+	self assert: (game positionOf: rodri) equals: 2.
+	self assert: (game lapsOf: rodri) equals: 2.
+	game player: rodri advance: 1.
+	self assert: (game positionOf: rodri) equals: 0.
+	self assert: (game lapsOf: rodri) equals: 3.
+	game player: rodri advance: -1.
+	self assert: (game positionOf: rodri) equals: 2.
+	self assert: (game lapsOf: rodri) equals: 2.
+	game player: rodri advance: -3.
+	self assert: (game positionOf: rodri) equals: 2.
+	self assert: (game lapsOf: rodri) equals: 1.
+	game player: rodri advance: -1.
+	self assert: (game positionOf: rodri) equals: 1.
+	self assert: (game lapsOf: rodri) equals: 1.
+	game player: rodri advance: -4.
+	self assert: (game positionOf: rodri) equals: 0.
+	self assert: (game lapsOf: rodri) equals: 0.
+	"arreglar que vaya mas de una vuelta para atras"
+	game player: rodri advance: -6.
+	self assert: (game positionOf: rodri) equals: 0.
+	self assert: (game lapsOf: rodri) equals: -1
+]
+
+{ #category : #tests }
+GameTest >> testChangingTurn [
+	| speedUp wormHole effectSequence game|
+	speedUp := SpeedUp new.
+	wormHole := WormHole new.
+	effectSequence := OrderedCollection new.
+	effectSequence
+		add: wormHole;
+		add: wormHole;
+		add: speedUp.
+	game := self gamedWithDiceSequence: #(1 2 3 4) andEffectSequence: effectSequence.
 	self assert: game turn equals: rodri.
 	self should: [ game play: fran ] raise: AssertionFailure.
 	game changeTurn.
@@ -50,136 +103,107 @@ GameTest >> testChangingTurn [
 
 { #category : #tests }
 GameTest >> testInstanceCreationGameAndAccesing [
-	| rodri fran game players speedup wormhole effectsequence |
-	speedup := SpeedUp new.
-	wormhole := WormHole new.
-	effectsequence := OrderedCollection new.
-	effectsequence
-		add: wormhole;
-		add: wormhole;
-		add: speedup.
-	players := OrderedCollection new.
-	rodri := Player named: 'Rodri'.
-	fran := Player named: 'Fran'.
-	players := OrderedCollection new.
-	players
-		add: rodri;
-		add: fran.
-	game := self intializeGame: players withDiceSequence: #(1 3 5 7) andEffectSequence: effectsequence.
+	| game speedUp wormHole effectSequence |
+	speedUp := SpeedUp new.
+	wormHole := WormHole new.
+	effectSequence := OrderedCollection new.
+	effectSequence
+		add: wormHole;
+		add: wormHole;
+		add: speedUp.
+	game := self gamedWithDiceSequence:#(1 3 5 7)  andEffectSequence: effectSequence .
 	self assert: game finished equals: false
 ]
 
 { #category : #tests }
 GameTest >> testPlayingGameWithEffects [
-	| rodri fran game players effectsequence ranking wormhole speedup moonwalk atomicbomb anothermoonwalk |
-	wormhole := WormHole new.
-	speedup := SpeedUp new.
-	atomicbomb := AtomicBomb new.
-	moonwalk := MoonWalk goBack: 2.
-	anothermoonwalk := MoonWalk goBack: 3.
-	effectsequence := OrderedCollection new.
-	effectsequence
-		add: speedup;
-		add: wormhole;
-		add: moonwalk;
-		add: atomicbomb;
-		add: anothermoonwalk.
-	players := OrderedCollection new.
-	rodri := Player named: 'Rodri'.
-	fran := Player named: 'Fran'.
-	players := OrderedCollection new.
-	players
-		add: rodri;
-		add: fran.
-	game := self intializeGame: players withDiceSequence: #(8 7 6 6) andEffectSequence: effectsequence.
+	| game effectSequence ranking wormHole speedUp moonWalk atomicBomb anotherMoonWalk withoutEffect |
+	wormHole := WormHole new.
+	withoutEffect := WithoutEffect new.
+	speedUp := SpeedUp new.
+	moonWalk := MoonWalk goBack: 1.
+	atomicBomb := AtomicBomb new.
+	anotherMoonWalk := MoonWalk goBack: 2.
+	effectSequence := OrderedCollection new.
+	effectSequence
+		add: speedUp;
+		add: wormHole;
+		add: moonWalk;
+		add: atomicBomb;
+		add: anotherMoonWalk;
+		add: speedUp;
+		add: speedUp;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect.
+	game := self gamedWithDiceSequence: #(8 2 2 2) andEffectSequence: effectSequence.
+	self assert: game board length equals: 10.
 	game play: rodri.
-	self assert: (game positionOf: rodri) equals: 19.
+	self assert: (game positionOf: rodri) equals: 4.
+	self assert: (game lapsOf: rodri) equals: 1.
 	self assert: game finished equals: false.
 	self assert: game turn equals: fran.
 	game play: fran.
-	self assert: (game positionOf: fran) equals: 8.
+	self assert: (game positionOf: fran) equals: 4.
+	self assert: (game positionOf: rodri) equals: 2.
 	self assert: game finished equals: false.
+	self assert: (game lapsOf: fran) equals: 0.
+	self assert: (game lapsOf: rodri) equals: 1.
 	self assert: game turn equals: rodri.
 	game play: rodri.
-	self assert: (game positionOf: rodri) equals: 14.
-	self assert: (game positionOf: fran) equals: 6.
+	self assert: (game positionOf: rodri) equals: 2.
+	self assert: (game positionOf: fran) equals: 3.
 	self assert: (game lapsOf: fran) equals: 0.
-	self assert: (game lapsOf: rodri) equals: 1.
-	self assert: game finished equals: false.
-	self assert: game turn equals: fran.
-	self should: [ game play: rodri ] raise: AssertionFailure.
-	game play: fran.
-	self assert: (game positionOf: fran) equals: 0.
-	self assert: (game positionOf: rodri) equals: 0.
-	self assert: (game lapsOf: rodri) equals: 1.
-	self assert: (game lapsOf: fran) equals: 0.
-	self should: [ game play: fran ] raise: AssertionFailure.
-	game play: rodri.
-	self assert: (game positionOf: rodri) equals: 15.
-	self assert: (game positionOf: fran) equals: 0.
-	self assert: (game lapsOf: rodri) equals: 1.
-	game play: fran.
-	self assert: (game positionOf: rodri) equals: 15.
-	self assert: (game positionOf: fran) equals: 16.	
-	game play: rodri.
-	self assert: (game positionOf: rodri) equals: 6.
-	self assert: (game positionOf: fran) equals: 16.
 	self assert: (game lapsOf: rodri) equals: 2.
-	self assert: (game lapsOf: fran) equals: 0.
-	self should: [ game play: fran ] raise: AssertionFailure.
 	self assert: game finished equals: rodri.
+	self should: [ game play: fran ] raise: AssertionFailure.
 	ranking := game rankPlayers.
 	self assert: (ranking at: 1) equals: rodri.
 	self assert: (ranking at: 2) equals: fran.
-	self assert: (game scoreOf: rodri) equals: 46.
-	self assert: (game scoreOf: fran) equals: 16
+	self assert: (game scoreOf: rodri) equals: 22.
+	self assert: (game scoreOf: fran) equals: 3
 ]
 
 { #category : #tests }
 GameTest >> testPlayingGameWithoutEffects [
-	| rodri fran game players effectsequence ranking withouteffect |
-	withouteffect := WithoutEffect new.
-	effectsequence := OrderedCollection new.
-	effectsequence add: withouteffect.
-	players := OrderedCollection new.
-	rodri := Player named: 'Rodri'.
-	fran := Player named: 'Fran'.
-	players := OrderedCollection new.
-	players
-		add: rodri;
-		add: fran.
-	game := self intializeGame: players withDiceSequence: #(5 3 5 7) andEffectSequence: effectsequence.
+	| game effectSequence ranking withoutEffect |
+	withoutEffect := WithoutEffect new.
+	effectSequence := OrderedCollection new.
+	effectSequence
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect.
+	game := self gamedWithDiceSequence: #(5 3 5 7) andEffectSequence: effectSequence.
+	self assert: game board length equals: 10.
 	game play: rodri.
 	self assert: (game positionOf: rodri) equals: 8.
 	self assert: game finished equals: false.
 	self assert: game turn equals: fran.
 	game play: fran.
-	self assert: (game positionOf: fran) equals: 12.
+	self assert: (game positionOf: fran) equals: 2.
 	self assert: game finished equals: false.
 	self assert: game turn equals: rodri.
 	game play: rodri.
-	self assert: (game positionOf: rodri) equals: 16.
+	self assert: (game positionOf: rodri) equals: 6.
+	self assert: (game lapsOf: rodri) equals: 1.
 	self assert: game finished equals: false.
 	self assert: game turn equals: fran.
 	game play: fran.
 	self assert: (game positionOf: fran) equals: 4.
-	self assert: game finished equals: false.
-	self assert: (game lapsOf: fran) equals:1.
+	self assert: (game lapsOf: fran) equals: 2.
 	self assert: game turn equals: rodri.
-	game play: rodri.
-	self assert: (game positionOf: fran) equals: 4.
-	self assert: (game lapsOf: fran) equals:1.
-	self assert: game finished equals: false.
-	self assert: game turn equals: fran.
 	self should: [ game play: rodri ] raise: AssertionFailure.
-	game play: fran.
-	self assert: (game positionOf: fran) equals: 16.
-	self assert: (game lapsOf: fran) equals:1.
-	self assert: game finished equals: false.
-	self assert: game turn equals: rodri.
+	self assert: game finished equals: fran.
 	ranking := game rankPlayers.
 	self assert: (ranking at: 1) equals: fran.
 	self assert: (ranking at: 2) equals: rodri.
-	self assert: (game scoreOf: fran) equals: 36.
-	self assert: (game scoreOf: rodri) equals: 24
+	self assert: (game scoreOf: fran) equals: 24.
+	self assert: (game scoreOf: rodri) equals: 16
 ]

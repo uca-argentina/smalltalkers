@@ -7,7 +7,6 @@ Class {
 		'diceCollection',
 		'winner',
 		'turnPlayer',
-		'turnPosition',
 		'order',
 		'playersPositions',
 		'playersLaps',
@@ -68,7 +67,7 @@ Game >> initializeWithPlayers: playersCollection onBoard: aBoard withDices: aDic
 
 { #category : #accessing }
 Game >> lapsOf: aPlayer [
-	^ playersLaps at: aPlayer ifAbsentPut: [0]
+	^ playersLaps at: aPlayer
 ]
 
 { #category : #playing }
@@ -97,15 +96,12 @@ Game >> player: aPlayer advance: aNumber [
 	actualposition := playersPositions at: aPlayer.
 	actuallaps := playersLaps at: aPlayer.
 	advancenumber := actualposition + aNumber.
-	advancenumber < 0 & (actuallaps = 0)
-		ifTrue: [ advancenumber := 0.
-			actuallaps := 0 ].
-	advancenumber < 0 & (actuallaps >= 1)
-		ifTrue: [ advancenumber := board length + actualposition + aNumber.
+	advancenumber < 0
+		ifTrue: [ advancenumber := (actualposition + aNumber) \\ board length.
 			actuallaps := actuallaps - 1 ].
-	advancenumber > board length
-		ifTrue: [ advancenumber := advancenumber - board length.
-			actuallaps := actuallaps + 1 ].
+	advancenumber >= board length
+		ifTrue: [ advancenumber := (actualposition + aNumber) \\ board length.
+			actuallaps := actuallaps + ((aNumber + actualposition) // board length) ].
 	playersPositions at: aPlayer put: advancenumber.
 	playersLaps at: aPlayer put: actuallaps
 ]
@@ -117,7 +113,7 @@ Game >> players [
 
 { #category : #accessing }
 Game >> positionOf: aPlayer [
-	^ playersPositions at: aPlayer ifAbsentPut: [0]
+	^ playersPositions at: aPlayer
 ]
 
 { #category : #accessing }
@@ -128,7 +124,7 @@ Game >> rankPlayers [
 
 { #category : #accessing }
 Game >> scoreOf: aPlayer [
-	^ playerScore at: aPlayer ifAbsentPut: [0]
+	^ playerScore at: aPlayer
 ]
 
 { #category : #accessing }

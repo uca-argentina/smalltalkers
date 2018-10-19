@@ -1,11 +1,11 @@
 Class {
-	#name : #RandomEffectStrategy,
-	#superclass : #EffectStrategy,
+	#name : #RandomCreatorEffects,
+	#superclass : #Object,
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #accessing }
-RandomEffectStrategy >> nextEffect [
+RandomCreatorEffects >> nextEffect [
 	| rand |
 	rand := Random new.
 	rand := (rand next * (100 - 1)) truncated + 1.
