@@ -1,22 +1,28 @@
 Class {
 	#name : #RandomCreatorEffects,
 	#superclass : #Object,
+	#instVars : [
+		'distribution'
+	],
 	#category : #'IngSoft2-Model'
 }
+
+{ #category : #accessing }
+RandomCreatorEffects >> giveMeAnEffect: aNumber [
+	distribution := Dictionary new
+		at: (1 to: 48) put: [ WithoutEffect new ];
+		at: (49 to: 68) put: [ WormHole new ];
+		at: (69 to: 88) put: [ SpeedUp new ];
+		at: (89 to: 98) put: [ MoonWalk goBack: 5 ];
+		at: (99 to: 100) put: [ AtomicBomb new ];
+		yourself.
+	distribution keys detect: [ :interval | interval includes: 67 ] ifFound: [ :foundInterval | ^ (distribution at: foundInterval) value ]
+]
 
 { #category : #accessing }
 RandomCreatorEffects >> nextEffect [
 	| rand |
 	rand := Random new.
 	rand := (rand next * (100 - 1)) truncated + 1.
-	(rand between: 1 and: 48)
-		ifTrue: [ ^ WithoutEffect new ].
-	(rand between: 49 and: 68)
-		ifTrue: [ ^ WormHole new ].
-	(rand between: 69 and: 88)
-		ifTrue: [ ^ SpeedUp new ].
-	(rand between: 89 and: 98)
-		ifTrue: [ ^ MoonWalk new ].
-	(rand between: 99 and: 100)
-		ifTrue: [ ^ AtomicBomb new ]
+	^ self giveMeAnEffect: rand.
 ]

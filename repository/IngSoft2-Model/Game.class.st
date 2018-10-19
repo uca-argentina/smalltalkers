@@ -11,7 +11,8 @@ Class {
 		'playersPositions',
 		'playersLaps',
 		'winningLaps',
-		'playerScore'
+		'playerScore',
+		'state'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -42,11 +43,13 @@ Game >> changeTurn [
 ]
 
 { #category : #accessing }
-Game >> finished [
-	winner := playersLaps select: [ :each | each value >= winningLaps ].
-	^ winner size > 0
-		ifTrue: [ winner keys at: 1 ]
-		ifFalse: [ false ]
+Game >> finished: aPlayer [
+	state:= state nextStateFor: self to: aPlayer
+]
+
+{ #category : #accessing }
+Game >> hasEnded [
+	^ state hasEnded
 ]
 
 { #category : #initialization }
@@ -62,7 +65,8 @@ Game >> initializeWithPlayers: playersCollection onBoard: aBoard withDices: aDic
 	playersLaps := Dictionary new.
 	players do: [ :player | playersLaps at: player put: 0 ].
 	playerScore := Dictionary new.
-	players do: [ :player | playerScore at: player put: 0 ]
+	players do: [ :player | playerScore at: player put: 0 ].
+	state:= PlayerState new.
 ]
 
 { #category : #accessing }
@@ -83,11 +87,10 @@ Game >> makeScoreOfPlayers [
 
 { #category : #playing }
 Game >> play: aPlayer [
-	self finished = false
-		ifFalse: [ AssertionFailure signal: 'You cannot play because the game is finished' ].
 	turnPlayer = aPlayer
 		ifTrue: [ self advanced: aPlayer ]
-		ifFalse: [ AssertionFailure signal: 'it is not your turn' ]
+		ifFalse: [ AssertionFailure signal: 'it is not your turn' ].
+	self finished: aPlayer
 ]
 
 { #category : #playing }
@@ -130,4 +133,14 @@ Game >> scoreOf: aPlayer [
 { #category : #accessing }
 Game >> turn [
 	^ turnPlayer
+]
+
+{ #category : #accessing }
+Game >> winner [
+	^ state winner
+]
+
+{ #category : #accessing }
+Game >> winningLaps [
+	^ winningLaps
 ]
