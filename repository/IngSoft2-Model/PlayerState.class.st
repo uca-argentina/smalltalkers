@@ -9,8 +9,13 @@ PlayerState >> hasEnded [
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : #accessing }
 PlayerState >> nextStateFor: aGame to: aPlayer [
 	(aGame lapsOf: aPlayer) >= aGame winningLaps
 		ifTrue: [ ^ GameEnded withWinner: aPlayer ]
+]
+
+{ #category : #accessing }
+PlayerState >> winner [
+	GameException signal: 'Game isnt finished'
 ]

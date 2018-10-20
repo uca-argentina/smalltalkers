@@ -8,6 +8,5 @@ Class {
 RandomStrategy >> next: aQuantityFace [
 	| rand |
 	rand := Random new.
-	rand := (rand next * (aQuantityFace - 1)) truncated + 1.
-	^ rand
+	^ (rand next * (aQuantityFace - 1)) truncated + 1.
 ]
