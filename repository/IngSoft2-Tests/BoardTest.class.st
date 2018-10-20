@@ -207,3 +207,23 @@ BoardTest >> testInstanceCreationAndAccessing [
 	game := self initializeGameWithSequence: sequence.
 	self assert: game board length equals: 2
 ]
+
+{ #category : #tests }
+BoardTest >> testInstanceCreationRandomEffects [
+	| game effect sequence |
+	sequence := OrderedCollection new.
+	effect := RandomCreatorEffects new.
+	sequence
+		add: effect nextEffect;
+		add: effect nextEffect;
+		add: effect nextEffect;
+		add: effect nextEffect;
+		add: effect nextEffect;
+		add: effect nextEffect;
+		add: effect nextEffect;
+		add: effect nextEffect;
+		add: effect nextEffect;
+		add: effect nextEffect.
+	game := self initializeGameWithSequence: sequence.
+	self assert: game board length equals: 10
+]

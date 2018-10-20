@@ -16,7 +16,7 @@ RandomCreatorEffects >> giveMeAnEffect: aNumber [
 		at: (89 to: 98) put: [ MoonWalk goBack: 5 ];
 		at: (99 to: 100) put: [ AtomicBomb new ];
 		yourself.
-	distribution keys detect: [ :interval | interval includes: 67 ] ifFound: [ :foundInterval | ^ (distribution at: foundInterval) value ]
+	distribution keys detect: [ :interval | interval includes: aNumber ] ifFound: [ :foundInterval | ^ (distribution at: foundInterval) value ]
 ]
 
 { #category : #accessing }
