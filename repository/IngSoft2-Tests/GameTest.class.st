@@ -77,15 +77,14 @@ GameTest >> testAdvancePlayer [
 	game player: rodri advance: -4.
 	self assert: (game positionOf: rodri) equals: 0.
 	self assert: (game lapsOf: rodri) equals: 0.
-	"arreglar que vaya mas de una vuelta para atras"
 	game player: rodri advance: -6.
 	self assert: (game positionOf: rodri) equals: 0.
-	self assert: (game lapsOf: rodri) equals: -1
+	self assert: (game lapsOf: rodri) equals: -2
 ]
 
 { #category : #tests }
 GameTest >> testChangingTurn [
-	| speedUp wormHole effectSequence game|
+	| speedUp wormHole effectSequence game |
 	speedUp := SpeedUp new.
 	wormHole := WormHole new.
 	effectSequence := OrderedCollection new.
@@ -95,10 +94,16 @@ GameTest >> testChangingTurn [
 		add: speedUp.
 	game := self gamedWithDiceSequence: #(1 2 3 4) andEffectSequence: effectSequence.
 	self assert: game turn equals: rodri.
-	self should: [ game play: fran ] raise: AssertionFailure.
+	self
+		should: [ game play: fran ]
+		raise: GameException
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'it is not your turn' ].
 	game changeTurn.
 	self assert: game turn equals: fran.
-	self should: [ game play: rodri ] raise: AssertionFailure
+	self
+		should: [ game play: rodri ]
+		raise: GameException
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'it is not your turn' ]
 ]
 
 { #category : #tests }
@@ -142,6 +147,10 @@ GameTest >> testPlayingGameWithEffects [
 	self assert: (game positionOf: rodri) equals: 4.
 	self assert: (game lapsOf: rodri) equals: 1.
 	self assert: game hasEnded equals: false.
+	self
+		should: [ game winner ]
+		raise: GameException
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'Game isnt finished' ].
 	self assert: game turn equals: fran.
 	game play: fran.
 	self assert: (game positionOf: fran) equals: 4.
@@ -195,7 +204,10 @@ GameTest >> testPlayingGameWithoutEffects [
 	self assert: (game lapsOf: rodri) equals: 1.
 	self assert: game hasEnded equals: false.
 	self assert: game turn equals: fran.
-	self should: [ game play: rodri ] raise: AssertionFailure.
+	self
+		should: [ game play: rodri ]
+		raise: GameException
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'it is not your turn' ].
 	game play: fran.
 	self assert: (game positionOf: fran) equals: 4.
 	self assert: (game lapsOf: fran) equals: 2.

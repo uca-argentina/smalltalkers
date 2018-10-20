@@ -176,7 +176,7 @@ BoardTest >> testApplyingWormHoleEffect [
 		add: wormHole;
 		add: wormHole.
 	game := self initializeGameWithSequence: sequence.
-	self assert: (game board length ) equals: 3.
+	self assert: game board length equals: 3.
 	game player: rodri advance: 8.
 	game player: fran advance: 12.
 	self assert: (game positionOf: rodri) equals: 2.
@@ -192,7 +192,7 @@ BoardTest >> testApplyingWormHoleEffect [
 	self assert: (game positionOf: rodri) equals: 1.
 	self assert: (game lapsOf: rodri) equals: 1.
 	self assert: (game positionOf: fran) equals: 2.
-	self assert: (game lapsOf: fran) equals: 3.
+	self assert: (game lapsOf: fran) equals: 2.
 ]
 
 { #category : #tests }

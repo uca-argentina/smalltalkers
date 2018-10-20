@@ -5,7 +5,6 @@ Class {
 		'board',
 		'players',
 		'diceCollection',
-		'winner',
 		'turnPlayer',
 		'order',
 		'playersPositions',
@@ -42,12 +41,12 @@ Game >> changeTurn [
 	turnPlayer := players at: order
 ]
 
-{ #category : #accessing }
+{ #category : #playing }
 Game >> finished: aPlayer [
 	state:= state nextStateFor: self to: aPlayer
 ]
 
-{ #category : #accessing }
+{ #category : #testing }
 Game >> hasEnded [
 	^ state hasEnded
 ]
@@ -89,7 +88,7 @@ Game >> makeScoreOfPlayers [
 Game >> play: aPlayer [
 	turnPlayer = aPlayer
 		ifTrue: [ self advanced: aPlayer ]
-		ifFalse: [ AssertionFailure signal: 'it is not your turn' ].
+		ifFalse: [ GameException signal: 'it is not your turn' ].
 	self finished: aPlayer
 ]
 
@@ -98,13 +97,8 @@ Game >> player: aPlayer advance: aNumber [
 	| actualposition actuallaps advancenumber |
 	actualposition := playersPositions at: aPlayer.
 	actuallaps := playersLaps at: aPlayer.
-	advancenumber := actualposition + aNumber.
-	advancenumber < 0
-		ifTrue: [ advancenumber := (actualposition + aNumber) \\ board length.
-			actuallaps := actuallaps - 1 ].
-	advancenumber >= board length
-		ifTrue: [ advancenumber := (actualposition + aNumber) \\ board length.
-			actuallaps := actuallaps + ((aNumber + actualposition) // board length) ].
+	advancenumber := (actualposition + aNumber) \\ board length.
+	actuallaps := actuallaps + ((aNumber + actualposition) // board length).
 	playersPositions at: aPlayer put: advancenumber.
 	playersLaps at: aPlayer put: actuallaps
 ]
