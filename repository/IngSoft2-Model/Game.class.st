@@ -49,11 +49,6 @@ Game >> changeTurn [
 	turnPlayer := players at: order
 ]
 
-{ #category : #playing }
-Game >> checkFinished: aPlayer [
-	state := state nextStateOf: aPlayer on: self
-]
-
 { #category : #testing }
 Game >> hasEnded [
 	^ state hasEnded
