@@ -21,13 +21,14 @@ Board class >> effects: effectsCollection [
 ]
 
 { #category : #playing }
-Board >> activeEffect: aGame to: aPlayer [
-	(self effect: (aGame positionOf: aPlayer)) apply: aGame to: aPlayer
-
+Board >> applyEffect: aGame to: aPlayer [
+	(self effectAt: (aGame positionOf: aPlayer))
+		applyTo: aPlayer
+		on: aGame
 ]
 
 { #category : #initialization }
-Board >> effect: aPosition [
+Board >> effectAt: aPosition [
 	^ effects at: (aPosition + 1)
 ]
 

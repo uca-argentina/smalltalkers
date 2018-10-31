@@ -9,10 +9,10 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
-{ #category : #tests }
-BoardTest >> initializeGameWithSequence: effectsCollection [
+{ #category : #'test-support' }
+BoardTest >> gameWithDiceRolling: effectsCollection [
 	| chargedStrategy dice diceCollection board game|
-	chargedStrategy := ChargedStrategy withSequence: #(1 3 5 7).
+	chargedStrategy := LoadedStrategy withSequence: #(1 3 5 7).
 	dice := Dice faces: 4 withStrategy: chargedStrategy.
 	diceCollection := OrderedCollection new.
 	diceCollection
@@ -27,15 +27,15 @@ BoardTest >> initializeGameWithSequence: effectsCollection [
 	^ game
 ]
 
-{ #category : #tests }
+{ #category : #running }
 BoardTest >> setUp [
 	players := OrderedCollection new.
 	rodri := Player named: 'Rodri'.
 	fran := Player named: 'Fran'.
-	players := OrderedCollection new.
-	players
+	players := OrderedCollection new
 		add: rodri;
-		add: fran
+		add: fran;
+		yourself.
 ]
 
 { #category : #tests }
@@ -47,19 +47,19 @@ BoardTest >> testApplyingAtomicBombEffect [
 	effectsSequence
 		add: atomicBomb;
 		add: anotherAtomicBomb.
-	game := self initializeGameWithSequence: effectsSequence.
+	game := self gameWithDiceRolling: effectsSequence.
 	game player: rodri advance: 3.
 	game player: fran advance: 4.
 	self assert: (game positionOf: rodri) equals: 1.
 	self assert: (game positionOf: fran) equals: 0.
 	self assert: (game lapsOf: fran) equals: 2.
 	self assert: (game lapsOf: rodri) equals: 1.
-	game board activeEffect: game to: rodri.
+	game board applyEffect: game to: rodri.
 	self assert: (game positionOf: rodri) equals: 0.
 	self assert: (game lapsOf: rodri) equals: 1.
 	self assert: (game positionOf: fran) equals: 0.
 	self assert: (game lapsOf: fran) equals: 2.
-	game board activeEffect: game to: fran.
+	game board applyEffect: game to: fran.
 	self assert: (game positionOf: rodri) equals: 0.
 	self assert: (game lapsOf: rodri) equals: 1.
 	self assert: (game positionOf: fran) equals: 0.
@@ -81,14 +81,14 @@ BoardTest >> testApplyingEffects [
 		add: withoutEffect;
 		add: speedUp;
 		add: moonWalk.
-	game := self initializeGameWithSequence: sequence.
+	game := self gameWithDiceRolling: sequence.
 	self assert: game board length equals: 5.
 	game player: rodri advance: 5.
 	self assert: (game positionOf: rodri) equals: 0.
 	self assert: (game positionOf: fran) equals: 0.
 	self assert: (game lapsOf: rodri) equals: 1.
 	self assert: (game lapsOf: fran) equals: 0.
-	game board activeEffect: game to: rodri.
+	game board applyEffect: game to: rodri.
 	self assert: (game positionOf: rodri) equals: 0.
 	self assert: (game positionOf: fran) equals: 0.
 	self assert: (game lapsOf: rodri) equals: 1.
@@ -98,8 +98,8 @@ BoardTest >> testApplyingEffects [
 	self assert: (game positionOf: fran) equals: 3.
 	self assert: (game lapsOf: rodri) equals: 1.
 	self assert: (game lapsOf: fran) equals: 1.
-	game board activeEffect: game to: fran.
-	self assert: (game board effect: (game positionOf: fran)) equals: withoutEffect.
+	game board applyEffect: game to: fran.
+	self assert: (game board effectAt: (game positionOf: fran)) equals: withoutEffect.
 	self assert: (game positionOf: rodri) equals: 0.
 	self assert: (game lapsOf: rodri) equals: 1.
 	self assert: (game positionOf: fran) equals: 2.
@@ -116,7 +116,7 @@ BoardTest >> testApplyingMoonWalkEffect [
 		add: moonWalk;
 		add: anotherMoonWalk;
 		add: anotherMoonWalk.
-	game := self initializeGameWithSequence: sequence.
+	game := self gameWithDiceRolling: sequence.
 	self assert: game board length equals: 3.
 	game player: rodri advance: 8.
 	game player: fran advance: 12.
@@ -124,12 +124,12 @@ BoardTest >> testApplyingMoonWalkEffect [
 	self assert: (game positionOf: fran) equals: 0.
 	self assert: (game lapsOf: rodri) equals: 2.
 	self assert: (game lapsOf: fran) equals: 4.
-	game board activeEffect: game to: rodri.
+	game board applyEffect: game to: rodri.
 	self assert: (game positionOf: rodri) equals: 2.
 	self assert: (game lapsOf: rodri) equals: 2.
 	self assert: (game positionOf: fran) equals: 1.
 	self assert: (game lapsOf: fran) equals: 3.
-	game board activeEffect: game to: fran.
+	game board applyEffect: game to: fran.
 	self assert: (game positionOf: rodri) equals: 0.
 	self assert: (game lapsOf: rodri) equals: 2.
 	self assert: (game positionOf: fran) equals: 1.
@@ -146,7 +146,7 @@ BoardTest >> testApplyingSpeedUpEffect [
 		add: speedUp;
 		add: speedUp;
 		add: speedUp.
-	game := self initializeGameWithSequence: sequence.
+	game := self gameWithDiceRolling: sequence.
 	self assert: game board length equals: 4.
 	game player: rodri advance: 8.
 	game player: fran advance: 12.
@@ -154,12 +154,12 @@ BoardTest >> testApplyingSpeedUpEffect [
 	self assert: (game positionOf: fran) equals: 0.
 	self assert: (game lapsOf: fran) equals: 3.
 	self assert: (game lapsOf: rodri) equals: 2.
-	game board activeEffect: game to: rodri.
+	game board applyEffect: game to: rodri.
 	self assert: (game positionOf: rodri) equals: 0.
 	self assert: (game lapsOf: rodri) equals: 3.
 	self assert: (game positionOf: fran) equals: 0.
 	self assert: (game lapsOf: fran) equals: 3.
-	game board activeEffect: game to: fran.
+	game board applyEffect: game to: fran.
 	self assert: (game positionOf: rodri) equals: 0.
 	self assert: (game lapsOf: rodri) equals: 3.
 	self assert: (game positionOf: fran) equals: 0.
@@ -175,7 +175,7 @@ BoardTest >> testApplyingWormHoleEffect [
 		add: wormHole;
 		add: wormHole;
 		add: wormHole.
-	game := self initializeGameWithSequence: sequence.
+	game := self gameWithDiceRolling: sequence.
 	self assert: game board length equals: 3.
 	game player: rodri advance: 8.
 	game player: fran advance: 12.
@@ -183,12 +183,12 @@ BoardTest >> testApplyingWormHoleEffect [
 	self assert: (game positionOf: fran) equals: 0.
 	self assert: (game lapsOf: fran) equals: 4.
 	self assert: (game lapsOf: rodri) equals: 2.
-	game board activeEffect: game to: rodri.
+	game board applyEffect: game to: rodri.
 	self assert: (game positionOf: rodri) equals: 1.
 	self assert: (game lapsOf: rodri) equals: 1.
 	self assert: (game positionOf: fran) equals: 0.
 	self assert: (game lapsOf: fran) equals: 4.
-	game board activeEffect: game to: fran.
+	game board applyEffect: game to: fran.
 	self assert: (game positionOf: rodri) equals: 1.
 	self assert: (game lapsOf: rodri) equals: 1.
 	self assert: (game positionOf: fran) equals: 2.
@@ -204,7 +204,7 @@ BoardTest >> testInstanceCreationAndAccessing [
 	sequence
 		add: moonWalk;
 		add: speedUp.
-	game := self initializeGameWithSequence: sequence.
+	game := self gameWithDiceRolling: sequence.
 	self assert: game board length equals: 2
 ]
 
@@ -224,6 +224,6 @@ BoardTest >> testInstanceCreationRandomEffects [
 		add: effect nextEffect;
 		add: effect nextEffect;
 		add: effect nextEffect.
-	game := self initializeGameWithSequence: sequence.
+	game := self gameWithDiceRolling: sequence.
 	self assert: game board length equals: 10
 ]

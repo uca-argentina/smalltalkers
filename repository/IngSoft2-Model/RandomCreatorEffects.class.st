@@ -2,7 +2,8 @@ Class {
 	#name : #RandomCreatorEffects,
 	#superclass : #Object,
 	#instVars : [
-		'distribution'
+		'distribution',
+		'rand'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -17,12 +18,15 @@ RandomCreatorEffects >> giveMeAnEffect: aNumber [
 		at: (99 to: 100) put: [ AtomicBomb new ];
 		yourself.
 	distribution keys detect: [ :interval | interval includes: aNumber ] ifFound: [ :foundInterval | ^ (distribution at: foundInterval) value ]
+	"ifAbsent: [ AssertionFailure signal: 'value not found']"
+]
+
+{ #category : #initialization }
+RandomCreatorEffects >> initialize [
+	rand := Random new.
 ]
 
 { #category : #accessing }
 RandomCreatorEffects >> nextEffect [
-	| rand |
-	rand := Random new.
-	rand := (rand next * (100 - 1)) truncated + 1.
-	^ self giveMeAnEffect: rand.
+	^ self giveMeAnEffect: (rand nextInt: 100)
 ]

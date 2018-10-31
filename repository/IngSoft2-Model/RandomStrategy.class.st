@@ -1,12 +1,18 @@
 Class {
 	#name : #RandomStrategy,
 	#superclass : #RollStrategy,
+	#instVars : [
+		'rand'
+	],
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #initialization }
+RandomStrategy >> initialize [
+	rand := Random new.
+]
+
 { #category : #accessing }
 RandomStrategy >> next: aQuantityFace [
-	| rand |
-	rand := Random new.
-	^ (rand next * (aQuantityFace - 1)) truncated + 1.
+	^ rand nextInt: aQuantityFace
 ]

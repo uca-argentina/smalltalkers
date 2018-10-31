@@ -5,5 +5,5 @@ Class {
 }
 
 { #category : #accessing }
-WithoutEffect >> apply: aGame to: aPlayer [
+WithoutEffect >> applyTo: aPlayer on: aGame [
 ]

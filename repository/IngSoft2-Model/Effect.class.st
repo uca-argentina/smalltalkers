@@ -5,6 +5,6 @@ Class {
 }
 
 { #category : #accessing }
-Effect >> apply: aGame to: aPlayer [
+Effect >> applyTo: aPlayer on: aGame [
 	self subclassResponsibility
 ]
