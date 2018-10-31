@@ -22,10 +22,18 @@ Game class >> playedBy: players onBoard: aBoard withDices: diceCollection withWi
 ]
 
 { #category : #playing }
-Game >> advanced: aPlayer [
+Game >> advanceAndApplyEffectTo: aPlayer [
 	self player: aPlayer advance: (aPlayer roll: diceCollection).
-	self board activeEffect: self to: aPlayer.
+	(self board effectAt: (self positionOf: aPlayer))
+		applyTo: aPlayer
+		on: self.
 	self changeTurn
+]
+
+{ #category : #playing }
+Game >> assertIsTurnOf: aPlayer [
+	turnPlayer = aPlayer
+		ifFalse: [ GameException signal: 'it is not your turn' ]
 ]
 
 { #category : #accessing }
@@ -42,8 +50,8 @@ Game >> changeTurn [
 ]
 
 { #category : #playing }
-Game >> finished: aPlayer [
-	state:= state nextStateFor: self to: aPlayer
+Game >> checkFinished: aPlayer [
+	state := state nextStateOf: aPlayer on: self
 ]
 
 { #category : #testing }
@@ -86,21 +94,17 @@ Game >> makeScoreOfPlayers [
 
 { #category : #playing }
 Game >> play: aPlayer [
-	turnPlayer = aPlayer
-		ifTrue: [ self advanced: aPlayer ]
-		ifFalse: [ GameException signal: 'it is not your turn' ].
-	self finished: aPlayer
+	self assertIsTurnOf: aPlayer.
+	self advanceAndApplyEffectTo: aPlayer.
+	state := state nextStateOf: aPlayer on: self
 ]
 
 { #category : #playing }
 Game >> player: aPlayer advance: aNumber [
-	| actualposition actuallaps advancenumber |
-	actualposition := playersPositions at: aPlayer.
-	actuallaps := playersLaps at: aPlayer.
-	advancenumber := (actualposition + aNumber) \\ board length.
-	actuallaps := actuallaps + ((aNumber + actualposition) // board length).
-	playersPositions at: aPlayer put: advancenumber.
-	playersLaps at: aPlayer put: actuallaps
+	| current |
+	current := playersPositions at: aPlayer.
+	playersPositions at: aPlayer put: (current + aNumber) \\ board length .
+	playersLaps at: aPlayer put: (playersLaps at:aPlayer) + ((current + aNumber) // board length).
 ]
 
 { #category : #accessing }
@@ -116,7 +120,7 @@ Game >> positionOf: aPlayer [
 { #category : #accessing }
 Game >> rankPlayers [
 	self makeScoreOfPlayers.
-	^ players asSortedCollection: [ :p1 :p2 | (self scoreOf: p1) >= (self scoreOf: p2) ]
+	^ players asSortedCollection: [ :player | self scoreOf: player ] descending
 ]
 
 { #category : #accessing }

@@ -5,6 +5,6 @@ Class {
 }
 
 { #category : #accessing }
-WormHole >> apply: aGame to: aPlayer [
+WormHole >> applyTo: aPlayer on: aGame [
 	aGame player: aPlayer advance: -4.
 ]

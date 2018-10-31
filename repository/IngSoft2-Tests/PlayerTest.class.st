@@ -7,8 +7,8 @@ Class {
 { #category : #tests }
 PlayerTest >> testPlayerRoll [
 	| dice anotherDice diceCollection player chargedStrategy anotherChargedStrategy|
-	chargedStrategy := ChargedStrategy withSequence: #(1 2 3 4).
-	anotherChargedStrategy := ChargedStrategy withSequence: #(2 3 4 5).
+	chargedStrategy := LoadedStrategy withSequence: #(1 2 3 4).
+	anotherChargedStrategy := LoadedStrategy withSequence: #(2 3 4 5).
 	dice := Dice faces: 6 withStrategy: chargedStrategy.
 	anotherDice := Dice faces: 6 withStrategy: anotherChargedStrategy.
 	diceCollection := OrderedCollection new.

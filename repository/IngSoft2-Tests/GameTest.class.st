@@ -12,10 +12,10 @@ Class {
 	#category : #'IngSoft2-Tests'
 }
 
-{ #category : #tests }
+{ #category : #'test-support' }
 GameTest >> gamedWithDiceSequence: diceSequence andEffectSequence: effectSequence [
 	|game board |
-	chargedStrategy := ChargedStrategy withSequence: diceSequence.
+	chargedStrategy := LoadedStrategy withSequence: diceSequence.
 	dice := Dice faces: 4 withStrategy: chargedStrategy.
 	diceCollection := OrderedCollection new.
 	diceCollection
@@ -30,15 +30,14 @@ GameTest >> gamedWithDiceSequence: diceSequence andEffectSequence: effectSequenc
 	^ game
 ]
 
-{ #category : #tests }
+{ #category : #running }
 GameTest >> setUp [
 	rodri := Player named: 'Rodri'.
 	fran := Player named: 'Fran'.
-	players := OrderedCollection new.
-	players
+	players := OrderedCollection new
 		add: rodri;
-		add: fran.
-
+		add: fran;
+		yourself
 ]
 
 { #category : #tests }

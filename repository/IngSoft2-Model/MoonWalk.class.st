@@ -13,7 +13,7 @@ MoonWalk class >> goBack: aNumber [
 ]
 
 { #category : #accessing }
-MoonWalk >> apply: aGame to: aPlayer [
+MoonWalk >> applyTo: aPlayer on: aGame [
 	| players |
 	players := aGame players reject: [ :player | player = aPlayer ].
 	players do: [ :player | aGame player: player advance: goBack negated ]

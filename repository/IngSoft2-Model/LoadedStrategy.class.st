@@ -1,5 +1,5 @@
 Class {
-	#name : #ChargedStrategy,
+	#name : #LoadedStrategy,
 	#superclass : #RollStrategy,
 	#instVars : [
 		'sequence',
@@ -9,18 +9,18 @@ Class {
 }
 
 { #category : #initialization }
-ChargedStrategy class >> withSequence: aSequence [
+LoadedStrategy class >> withSequence: aSequence [
 	^ self new initializeWithSequence: aSequence
 ]
 
 { #category : #initialization }
-ChargedStrategy >> initializeWithSequence: aSequence [
+LoadedStrategy >> initializeWithSequence: aSequence [
 	sequence := aSequence asOrderedCollection.
 	nextPosition := 1
 ]
 
 { #category : #accessing }
-ChargedStrategy >> next: aQuantityFace [
+LoadedStrategy >> next: aQuantityFace [
 	| previousPosition |
 	nextPosition > sequence size
 		ifTrue: [ nextPosition := 1 ].

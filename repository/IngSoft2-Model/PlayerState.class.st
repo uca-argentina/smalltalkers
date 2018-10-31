@@ -10,9 +10,10 @@ PlayerState >> hasEnded [
 ]
 
 { #category : #accessing }
-PlayerState >> nextStateFor: aGame to: aPlayer [
-	(aGame lapsOf: aPlayer) >= aGame winningLaps
-		ifTrue: [ ^ GameEnded withWinner: aPlayer ]
+PlayerState >> nextStateOf: aPlayer on: aGame [
+	^ (aGame lapsOf: aPlayer) >= aGame winningLaps
+		ifTrue: [ GameEnded withWinner: aPlayer ]
+		ifFalse: [ self ]
 ]
 
 { #category : #accessing }

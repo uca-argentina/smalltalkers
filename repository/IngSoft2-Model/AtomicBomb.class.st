@@ -5,11 +5,6 @@ Class {
 }
 
 { #category : #accessing }
-AtomicBomb >> apply: aGame to: aPlayer [
-	| players position |
-	players := aGame players.
-	players
-		do: [ :player | 
-			position := aGame positionOf: player.
-			aGame player: player advance: position negated ]
+AtomicBomb >> applyTo: aPlayer on: aGame [
+	aGame players do: [ :player | aGame player: player advance: (aGame positionOf: aPlayer) negated ]
 ]

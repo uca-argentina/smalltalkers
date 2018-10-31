@@ -5,6 +5,6 @@ Class {
 }
 
 { #category : #accessing }
-SpeedUp >> apply: aGame to: aPlayer [
+SpeedUp >> applyTo: aPlayer on: aGame [
 	aGame player: aPlayer advance: 4
 ]
