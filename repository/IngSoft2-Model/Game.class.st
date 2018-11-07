@@ -11,7 +11,8 @@ Class {
 		'playersLaps',
 		'winningLaps',
 		'playerScore',
-		'state'
+		'state',
+		'cardEffectAdvanceNumber'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -68,7 +69,9 @@ Game >> initializeWithPlayers: playersCollection onBoard: aBoard withDices: aDic
 	players do: [ :player | playersLaps at: player put: 0 ].
 	playerScore := Dictionary new.
 	players do: [ :player | playerScore at: player put: 0 ].
-	state:= PlayerState new.
+	state := PlayerState new.
+	cardEffectAdvanceNumber := Dictionary new.
+	players do: [ :player | cardEffectAdvanceNumber at: player put: 0 ]
 ]
 
 { #category : #accessing }
@@ -88,6 +91,13 @@ Game >> makeScoreOfPlayers [
 ]
 
 { #category : #playing }
+Game >> modifyCardEffectAdvanceNumberOf: aPlayer with: aNumber [
+	| current |
+	current := cardEffectAdvanceNumber at: aPlayer.
+	cardEffectAdvanceNumber at: aPlayer put: current + aNumber
+]
+
+{ #category : #playing }
 Game >> play: aPlayer [
 	self assertIsTurnOf: aPlayer.
 	self advanceAndApplyEffectTo: aPlayer.
@@ -96,10 +106,18 @@ Game >> play: aPlayer [
 
 { #category : #playing }
 Game >> player: aPlayer advance: aNumber [
-	| current |
+	| current cardTotalEffects|
 	current := playersPositions at: aPlayer.
-	playersPositions at: aPlayer put: (current + aNumber) \\ board length .
-	playersLaps at: aPlayer put: (playersLaps at:aPlayer) + ((current + aNumber) // board length).
+	cardTotalEffects := cardEffectAdvanceNumber at: aPlayer.
+	playersPositions at: aPlayer put: (current + aNumber + cardTotalEffects) \\ board length .
+	playersLaps at: aPlayer put: (playersLaps at:aPlayer) + ((current + aNumber + cardTotalEffects) // board length).
+]
+
+{ #category : #playing }
+Game >> player: aPlayer useCard: aCard against: anotherPlayer [
+	|card|
+	card:= aPlayer useCardNamed: aCard.
+	card useAgainst: anotherPlayer on: self
 ]
 
 { #category : #accessing }

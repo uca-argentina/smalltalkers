@@ -9,5 +9,5 @@ RandomDiceStrategyTest >> testRollRandomDiceStrategy [
 	| dice randomStrategy |
 	randomStrategy := RandomStrategy new.
 	dice := Dice faces: 7 withStrategy: randomStrategy.
-	self assert: (dice roll between: 1 and: 7)
+	self assert: (dice roll between: 1 and: 7).
 ]

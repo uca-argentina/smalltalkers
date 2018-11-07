@@ -30,8 +30,8 @@ BoardTest >> gameWithDiceRolling: effectsCollection [
 { #category : #running }
 BoardTest >> setUp [
 	players := OrderedCollection new.
-	rodri := Player named: 'Rodri'.
-	fran := Player named: 'Fran'.
+	rodri := Player named: 'Rodri' with: 'asd'.
+	fran := Player named: 'Fran' with: 'asd'.
 	players := OrderedCollection new
 		add: rodri;
 		add: fran;

@@ -32,8 +32,15 @@ GameTest >> gamedWithDiceSequence: diceSequence andEffectSequence: effectSequenc
 
 { #category : #running }
 GameTest >> setUp [
-	rodri := Player named: 'Rodri'.
-	fran := Player named: 'Fran'.
+	| cardCollection overload speed |
+	cardCollection := OrderedCollection new.
+	speed := Speed new.
+	overload := Overload new.
+	cardCollection
+		add: overload;
+		add: speed.
+	rodri := Player named: 'Rodri' with: cardCollection.
+	fran := Player named: 'Fran' with: cardCollection.
 	players := OrderedCollection new
 		add: rodri;
 		add: fran;
@@ -170,6 +177,54 @@ GameTest >> testPlayingGameWithEffects [
 	self assert: (ranking at: 2) equals: fran.
 	self assert: (game scoreOf: rodri) equals: 22.
 	self assert: (game scoreOf: fran) equals: 3
+]
+
+{ #category : #tests }
+GameTest >> testPlayingGameWithPermanentCardEffectsOnly [
+	| game effectSequence  addOverloadCard addAccelerationCard withoutEffect|
+	withoutEffect := WithoutEffect new.
+	addOverloadCard := AddOverloadCard new.
+	addAccelerationCard := AddAccelerationCard new.
+	effectSequence := OrderedCollection new.
+	effectSequence
+		add: withoutEffect;
+		add: withoutEffect;
+		add: addAccelerationCard;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: addOverloadCard;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect.
+	game := self gamedWithDiceSequence: #(3 3 3 3) andEffectSequence: effectSequence.
+	self assert: game board length equals: 18.
+	game play: rodri.
+	self assert: (game positionOf: rodri) equals: 6.
+	game player: rodri useCard: 'Overload' against: fran.
+	game player: rodri useCard: 'Overload' against: fran.
+	game play: fran.
+	self assert: (game positionOf: fran) equals: 2.
+	game player: fran useCard: 'Speed' against: rodri.
+	game player: fran useCard: 'Acceleration' against: 'all'.
+	game play: rodri.
+	self assert: (game positionOf: rodri) equals: 14.
+	game play: fran.
+	self assert: (game positionOf: fran) equals: 5.
+	
+	
+	
+	
+	
+	
 ]
 
 { #category : #tests }

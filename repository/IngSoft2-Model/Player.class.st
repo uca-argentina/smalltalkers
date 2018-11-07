@@ -2,7 +2,8 @@ Class {
 	#name : #Player,
 	#superclass : #Object,
 	#instVars : [
-		'name'
+		'name',
+		'cardCollection'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -14,14 +15,20 @@ Player class >> assertWithValidName: aName [
 ]
 
 { #category : #initialization }
-Player class >> named: aName [
+Player class >> named: aName with: aCardCollection [
 	self assertWithValidName: aName.
-	^ self new initializeWithName: aName
+	^ self new initializeWithName: aName andCardCollection: aCardCollection
+]
+
+{ #category : #adding }
+Player >> addCard: aCard [
+	cardCollection add: aCard
 ]
 
 { #category : #initialization }
-Player >> initializeWithName: aName [
-	name := aName
+Player >> initializeWithName: aName andCardCollection: aCardCollection [
+	name := aName.
+	cardCollection := aCardCollection.
 ]
 
 { #category : #playing }
@@ -29,4 +36,12 @@ Player >> roll: diceCollection [
 	| rollNumber |
 	rollNumber := diceCollection sumNumbers: [ :dice | dice roll ].
 	^ rollNumber
+]
+
+{ #category : #playing }
+Player >> useCardNamed: aName [
+	| card |
+	card := cardCollection detect: [ :each | each name = aName ].
+	cardCollection remove: card.
+	^ card
 ]
