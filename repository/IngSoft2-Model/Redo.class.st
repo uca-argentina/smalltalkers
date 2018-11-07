@@ -1,5 +1,5 @@
 Class {
 	#name : #Redo,
-	#superclass : #InstantaneousCard,
+	#superclass : #Card,
 	#category : #'IngSoft2-Model'
 }

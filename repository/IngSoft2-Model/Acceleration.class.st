@@ -19,7 +19,6 @@ Acceleration >> name [
 
 { #category : #playing }
 Acceleration >> useAgainst: aPlayer on: aGame [
-
 aGame players do: [ :player | aGame modifyCardEffectAdvanceNumberOf: player with: 1]
  
 ]

@@ -6,8 +6,7 @@ Class {
 
 { #category : #accessing }
 AddAccelerationCard >> applyTo: aPlayer on: aGame [
-	| acceleration player|
-	acceleration := Acceleration  new.
+	|  player|
 	player := (aGame players) detect: [ :each | each = aPlayer].
-	player addCard: acceleration
+	player addCard: Acceleration  new.
 ]

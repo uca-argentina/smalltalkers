@@ -6,7 +6,7 @@ Class {
 
 { #category : #tests }
 PlayerTest >> testPlayerRoll [
-	| dice anotherDice diceCollection player chargedStrategy anotherChargedStrategy|
+	| dice anotherDice diceCollection player chargedStrategy anotherChargedStrategy cardCollection |
 	chargedStrategy := LoadedStrategy withSequence: #(1 2 3 4).
 	anotherChargedStrategy := LoadedStrategy withSequence: #(2 3 4 5).
 	dice := Dice faces: 6 withStrategy: chargedStrategy.
@@ -14,7 +14,7 @@ PlayerTest >> testPlayerRoll [
 	diceCollection := OrderedCollection new.
 	diceCollection add: dice.
 	diceCollection add: anotherDice.
-	player := Player named: 'Rodri'.
+	player := Player named: 'Rodri' with: cardCollection.
 	self assert: (player roll: diceCollection) equals:  3.
 	self assert: (player roll: diceCollection) equals:  5.
 	self assert: (player roll: diceCollection) equals:  7.
