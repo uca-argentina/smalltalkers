@@ -6,7 +6,5 @@ Class {
 
 { #category : #accessing }
 AddOverloadCard >> applyTo: aPlayer on: aGame [
-	|  player|
-	player := (aGame players) detect: [ :each | each = aPlayer].
-	player addCard: Overload new.
+	aGame player: aPlayer  addCard: Overload new.
 ]

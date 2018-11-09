@@ -12,7 +12,9 @@ Class {
 		'winningLaps',
 		'playerScore',
 		'state',
-		'cardEffectAdvanceNumber'
+		'cardEffectAdvanceNumber',
+		'cardsHistory',
+		'playerLastEffect'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -25,9 +27,8 @@ Game class >> playedBy: players onBoard: aBoard withDices: diceCollection withWi
 { #category : #playing }
 Game >> advanceAndApplyEffectTo: aPlayer [
 	self player: aPlayer advance: (aPlayer roll: diceCollection).
-	(self board effectAt: (self positionOf: aPlayer))
-		applyTo: aPlayer
-		on: self.
+	playerLastEffect at: aPlayer put: (self board effectAt: (self positionOf: aPlayer)).
+	(self board effectAt: (self positionOf: aPlayer)) applyTo: aPlayer on: self.
 	self changeTurn
 ]
 
@@ -40,6 +41,11 @@ Game >> assertIsTurnOf: aPlayer [
 { #category : #accessing }
 Game >> board [
 	^ board
+]
+
+{ #category : #accessing }
+Game >> cardsHistory [
+	^ cardsHistory 
 ]
 
 { #category : #playing }
@@ -71,7 +77,10 @@ Game >> initializeWithPlayers: playersCollection onBoard: aBoard withDices: aDic
 	players do: [ :player | playerScore at: player put: 0 ].
 	state := PlayerState new.
 	cardEffectAdvanceNumber := Dictionary new.
-	players do: [ :player | cardEffectAdvanceNumber at: player put: 0 ]
+	players do: [ :player | cardEffectAdvanceNumber at: player put: 0 ].
+	cardsHistory := OrderedCollection new.
+	playerLastEffect := Dictionary new.
+	players do: [ :player | playerLastEffect at: player put: 0 ].
 ]
 
 { #category : #accessing }
@@ -105,6 +114,11 @@ Game >> play: aPlayer [
 ]
 
 { #category : #playing }
+Game >> player: aPlayer addCard: aCard [
+	players detect: [ :each | each = aPlayer ] ifFound: [ :found | found addCard: aCard ]
+]
+
+{ #category : #playing }
 Game >> player: aPlayer advance: aNumber [
 	| current cardTotalEffects|
 	current := playersPositions at: aPlayer.
@@ -114,10 +128,24 @@ Game >> player: aPlayer advance: aNumber [
 ]
 
 { #category : #playing }
-Game >> player: aPlayer useCard: aCard against: anotherPlayer [
-	|card|
-	card:= aPlayer useCardNamed: aCard.
-	card useAgainst: anotherPlayer on: self
+Game >> player: aPlayer targetForCancellationCardIs: aTarget [
+	aPlayer cancellationTargetIs: aTarget
+]
+
+{ #category : #playing }
+Game >> player: aPlayer useCard: aCardName against: anotherPlayer [
+	players
+		detect: [ :each | each = aPlayer ]
+		ifFound: [ :found | 
+			(found useCardNamed: aCardName) useAgainst: anotherPlayer on: self.
+			found removeCard: aCardName ].
+	aCardName = 'Redo'
+		ifFalse: [ cardsHistory add: (CardHistory from: aPlayer to: anotherPlayer with: aCardName) ]
+]
+
+{ #category : #accessing }
+Game >> playerLastEffect [
+	^ playerLastEffect 
 ]
 
 { #category : #accessing }
@@ -134,6 +162,14 @@ Game >> positionOf: aPlayer [
 Game >> rankPlayers [
 	self makeScoreOfPlayers.
 	^ players asSortedCollection: [ :player | self scoreOf: player ] descending
+]
+
+{ #category : #playing }
+Game >> removePlayedCardAffecting: aPlayerName with: aCardName [
+	cardsHistory
+		detect: [ :each | each targetName = aPlayerName and: each effect = aCardName ]
+		ifFound: [ :found | cardsHistory remove: found ]
+		ifNone: [ AssertionFailure signal: 'That player is not affected by that card' ]
 ]
 
 { #category : #accessing }

@@ -25,10 +25,29 @@ Player >> addCard: aCard [
 	cardCollection add: aCard
 ]
 
+{ #category : #playing }
+Player >> cancellationTargetIs: aTarget [
+	cardCollection
+		detect: [ :each | each name = 'Cancellation' ]
+		ifFound: [ :found | 
+			found selectTarget: aTarget  ]
+		ifNone: [ AssertionFailure signal: 'You dont have that card' ]
+]
+
 { #category : #initialization }
 Player >> initializeWithName: aName andCardCollection: aCardCollection [
 	name := aName.
 	cardCollection := aCardCollection.
+]
+
+{ #category : #accessing }
+Player >> name [
+	^ name
+]
+
+{ #category : #playing }
+Player >> removeCard: aCardName [
+	cardCollection detect: [ :each | each name = aCardName ] ifFound: [ :found | cardCollection remove: found ]
 ]
 
 { #category : #playing }
@@ -40,8 +59,8 @@ Player >> roll: diceCollection [
 
 { #category : #playing }
 Player >> useCardNamed: aName [
-	| card |
-	card := cardCollection detect: [ :each | each name = aName ].
-	cardCollection remove: card.
-	^ card
+	cardCollection
+		detect: [ :each | each name = aName ]
+		ifFound: [ :found | ^ found ]
+		ifNone: [ AssertionFailure signal: 'You dont have that card' ]
 ]
