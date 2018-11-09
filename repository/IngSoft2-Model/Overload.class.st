@@ -2,14 +2,16 @@ Class {
 	#name : #Overload,
 	#superclass : #PermanentCard,
 	#instVars : [
-		'name'
+		'name',
+		'extraNumber'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #initialization }
 Overload >> initialize [
-name := 'Overload'
+name := 'Overload'.
+extraNumber := -2
 
 ]
 
@@ -19,8 +21,12 @@ Overload >> name [
 ]
 
 { #category : #playing }
-Overload >> useAgainst: aPlayer on: aGame [
-aGame modifyCardEffectAdvanceNumberOf: aPlayer with: -2
- 
+Overload >> opposeEffect [
+	extraNumber := 2
+]
 
+{ #category : #playing }
+Overload >> useAgainst: aPlayer on: aGame [
+	aGame assertIsTurnOf: aPlayer.
+	aGame modifyCardEffectAdvanceNumberOf: aPlayer with: extraNumber.
 ]

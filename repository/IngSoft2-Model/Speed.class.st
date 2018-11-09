@@ -2,14 +2,16 @@ Class {
 	#name : #Speed,
 	#superclass : #PermanentCard,
 	#instVars : [
-		'name'
+		'name',
+		'extraNumber'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #initialization }
 Speed >> initialize [
-name := 'Speed'
+name := 'Speed'.
+extraNumber := 1
 ]
 
 { #category : #accessing }
@@ -18,6 +20,12 @@ Speed >> name [
 ]
 
 { #category : #playing }
+Speed >> opposeEffect [
+	extraNumber := -1
+]
+
+{ #category : #playing }
 Speed >> useAgainst: aPlayer on: aGame [
-aGame modifyCardEffectAdvanceNumberOf: aPlayer with: 1
+	aGame assertIsTurnOf: aPlayer.
+	aGame modifyCardEffectAdvanceNumberOf: aPlayer with: extraNumber
 ]

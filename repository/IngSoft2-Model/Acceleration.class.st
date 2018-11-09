@@ -2,14 +2,16 @@ Class {
 	#name : #Acceleration,
 	#superclass : #PermanentCard,
 	#instVars : [
-		'name'
+		'name',
+		'extraNumber'
 	],
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #initialization }
 Acceleration >> initialize [
-name := 'Acceleration'
+name := 'Acceleration'.
+extraNumber := 1
 ]
 
 { #category : #accessing }
@@ -18,7 +20,11 @@ Acceleration >> name [
 ]
 
 { #category : #playing }
+Acceleration >> opposeEffect [
+extraNumber := -1
+]
+
+{ #category : #playing }
 Acceleration >> useAgainst: aPlayer on: aGame [
-aGame players do: [ :player | aGame modifyCardEffectAdvanceNumberOf: player with: 1]
- 
+	aGame players do: [ :player | aGame modifyCardEffectAdvanceNumberOf: player with: extraNumber ]
 ]
