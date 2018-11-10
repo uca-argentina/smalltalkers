@@ -7,7 +7,6 @@ Class {
 { #category : #initialization }
 Speed >> initialize [
 	name := 'Speed'.
-	extraNumber := 1
 ]
 
 { #category : #accessing }

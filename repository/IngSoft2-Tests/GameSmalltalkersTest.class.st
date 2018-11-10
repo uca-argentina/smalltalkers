@@ -32,19 +32,19 @@ GameSmalltalkersTest >> gamedWithDiceSequence: diceSequence andEffectSequence: e
 
 { #category : #running }
 GameSmalltalkersTest >> setUp [
-	| RodriCardCollection FranCardCollection overload speed |
+	| rodriCardCollection franCardCollection overload speed |
 	speed := Speed new.
 	overload := Overload new.
-	RodriCardCollection := OrderedCollection new.
-	RodriCardCollection
+	rodriCardCollection := OrderedCollection new.
+	rodriCardCollection
 		add: overload;
 		add: speed.
-	FranCardCollection := OrderedCollection new.
-	FranCardCollection
+	franCardCollection := OrderedCollection new.
+	franCardCollection
 		add: overload;
 		add: speed.
-	rodri := Player named: 'Rodri' with: RodriCardCollection.
-	fran := Player named: 'Fran' with: FranCardCollection.
+	rodri := Player named: 'Rodri' with: rodriCardCollection.
+	fran := Player named: 'Fran' with: franCardCollection.
 	players := OrderedCollection new
 		add: rodri;
 		add: fran;
@@ -132,20 +132,21 @@ GameSmalltalkersTest >> testInstanceCreationGameAndAccesing [
 
 { #category : #tests }
 GameSmalltalkersTest >> testPlayingGameWithCancellationCard [
-	| game effectSequence addCancellationCard  withoutEffect |
+	| game effectSequence addCancellationCard withoutEffect addAcelerationCard |
 	withoutEffect := WithoutEffect new.
 	addCancellationCard := AddCancellationCard new.
+	addAcelerationCard := AddAccelerationCard new.
 	effectSequence := OrderedCollection new.
 	effectSequence
 		add: withoutEffect;
 		add: withoutEffect;
 		add: withoutEffect;
-		add: withoutEffect;
+		add: addAcelerationCard;
 		add: addCancellationCard;
 		add: withoutEffect;
-		add: withoutEffect;
-		add: withoutEffect;
-		add: withoutEffect;
+		add: addCancellationCard;
+		add: addCancellationCard;
+		add: addCancellationCard;
 		add: withoutEffect;
 		add: withoutEffect;
 		add: withoutEffect;
@@ -159,29 +160,25 @@ GameSmalltalkersTest >> testPlayingGameWithCancellationCard [
 	self assert: (game positionOf: rodri) equals: 4.
 	game play: fran.
 	self assert: (game positionOf: fran) equals: 4.
-	self should: [game player: fran useCard: 'Cancellation' against: fran] raise: AssertionFailure.
-	self should: [game player: rodri useCard: 'Cancellation' against: rodri] raise: AssertionFailure.
+	self should: [ game player: fran useCard: 'Cancellation' against: fran ] raise: AssertionFailure.
+	self should: [ game player: rodri useCard: 'Cancellation' against: rodri ] raise: AssertionFailure.
 	game player: rodri useCard: 'Overload' against: fran.
 	game play: rodri.
+	game player: fran useCard: 'Speed' against: rodri.
 	self assert: (game positionOf: rodri) equals: 8.
-	self should: [game player: rodri useCard: 'Cancellation' against: fran] raise: AssertionFailure.
+	self should: [ game player: rodri useCard: 'Cancellation' against: fran ] raise: AssertionFailure.
 	game play: fran.
 	self assert: (game positionOf: fran) equals: 6.
 	game player: rodri targetForCancellationCardIs: 'Overload'.
 	game player: rodri useCard: 'Cancellation' against: fran.
 	game play: rodri.
-	self assert: (game positionOf: rodri) equals: 12.
+	game player: fran targetForCancellationCardIs: 'Speed'.
+	game player: fran useCard: 'Cancellation' against: rodri.
+	self assert: (game positionOf: rodri) equals: 13.
 	game play: fran.
 	self assert: (game positionOf: fran) equals: 10.
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	game play: rodri.
+	self assert: (game positionOf: rodri) equals: 1
 ]
 
 { #category : #tests }

@@ -7,10 +7,9 @@ Class {
 { #category : #initialization }
 Overload >> initialize [
 	name := 'Overload'.
-	extraNumber := -2
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 Overload >> name [
 	^ name
 ]
