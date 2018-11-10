@@ -16,12 +16,13 @@ Overload >> name [
 ]
 
 { #category : #playing }
-Overload >> opposeEffect [
-	extraNumber := 2
+Overload >> player: aPlayer cancelEffectTo: anotherPlayer on: aGame [
+	aGame assertIsTurnOf: aPlayer.
+	aGame modifyCardEffectAdvanceNumberOf: anotherPlayer with: 2
 ]
 
 { #category : #playing }
 Overload >> player: aPlayer useAgainst: anotherPlayer on: aGame [
 	aGame assertIsTurnOf: aPlayer.
-	aGame modifyCardEffectAdvanceNumberOf: anotherPlayer with: extraNumber
+	aGame modifyCardEffectGoBackNumberOf: anotherPlayer with: 2
 ]

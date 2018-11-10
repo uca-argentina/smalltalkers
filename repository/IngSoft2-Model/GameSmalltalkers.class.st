@@ -111,6 +111,11 @@ GameSmalltalkers >> modifyCardEffectAdvanceNumberOf: aPlayer with: aNumber [
 ]
 
 { #category : #playing }
+GameSmalltalkers >> modifyCardEffectGoBackNumberOf: aPlayer with: aNumber [
+	cardEffectAdvanceNumber at: aPlayer put: (cardEffectAdvanceNumber at: aPlayer) - aNumber
+]
+
+{ #category : #playing }
 GameSmalltalkers >> play: aPlayer [
 	self assertIsTurnOf: aPlayer.
 	self advanceAndApplyEffectTo: aPlayer.

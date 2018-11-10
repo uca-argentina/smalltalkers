@@ -16,12 +16,13 @@ Speed >> name [
 ]
 
 { #category : #playing }
-Speed >> opposeEffect [
-	extraNumber := -1
+Speed >> player: aPlayer cancelEffectTo: anotherPlayer on: aGame [
+	aGame assertIsTurnOf: aPlayer.
+	aGame modifyCardEffectGoBackNumberOf: anotherPlayer with: 1.
 ]
 
 { #category : #playing }
 Speed >> player: aPlayer useAgainst: anotherPlayer on: aGame [
 	aGame assertIsTurnOf: aPlayer.
-	aGame modifyCardEffectAdvanceNumberOf: anotherPlayer with: extraNumber
+	aGame modifyCardEffectAdvanceNumberOf: anotherPlayer with: 1
 ]

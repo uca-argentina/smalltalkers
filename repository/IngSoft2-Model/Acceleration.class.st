@@ -16,14 +16,13 @@ Acceleration >> name [
 ]
 
 { #category : #playing }
-Acceleration >> opposeEffect [
-	extraNumber := -1
+Acceleration >> player: aPlayer cancelEffectTo: anotherPlayer on: aGame [
+	aGame assertIsTurnOf: aPlayer.
+	aGame players do: [ :player | aGame modifyCardEffectGoBackNumberOf: player with: 1 ]
 ]
 
 { #category : #playing }
 Acceleration >> player: aPlayer useAgainst: anotherPlayer on: aGame [
 	aGame assertIsTurnOf: aPlayer.
-	aGame players
-		do:
-			[ :player | aGame modifyCardEffectAdvanceNumberOf: player with: extraNumber ]
+	aGame players do: [ :player | aGame modifyCardEffectAdvanceNumberOf: player with: 1 ]
 ]

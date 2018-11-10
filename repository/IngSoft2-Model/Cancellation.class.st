@@ -17,7 +17,6 @@ Cancellation >> initialize [
 		add: Acceleration new;
 		add: Overload new;
 		add: Speed new.
-	permanentCards do: [ :card | card opposeEffect. ]
 ]
 
 { #category : #initialization }
@@ -27,12 +26,13 @@ Cancellation >> name [
 
 { #category : #playing }
 Cancellation >> player: aPlayer useAgainst: anotherPlayer on: aGame [
-	| card |
 	target = 'none'
 		ifTrue: [ AssertionFailure signal: 'You have to declare a target first' ]
-		ifFalse: [ card := permanentCards detect: [ :each | each name = target ].
-			aGame removePlayedCardAffecting: anotherPlayer name with: card name.
-			card player: aPlayer useAgainst: anotherPlayer on: aGame ]
+		ifFalse: [ permanentCards
+				detect: [ :each | each name = target ]
+				ifFound: [ :found | 
+					aGame removePlayedCardAffecting: anotherPlayer name with: found name.
+					found player: aPlayer cancelEffectTo: anotherPlayer on: aGame ] ]
 ]
 
 { #category : #accessing }
