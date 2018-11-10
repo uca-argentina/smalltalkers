@@ -2,7 +2,6 @@ Class {
 	#name : #Redo,
 	#superclass : #Card,
 	#instVars : [
-		'name',
 		'cards',
 		'target'
 	],

@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #accessing }
+{ #category : #applying }
 Effect >> applyTo: aPlayer on: aGame [
 	self subclassResponsibility
 ]

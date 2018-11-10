@@ -4,8 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #accessing }
+{ #category : #applying }
 AddCard >> applyTo: aPlayer on: aGame [
-self subclassResponsibility
-
+	self subclassResponsibility
 ]

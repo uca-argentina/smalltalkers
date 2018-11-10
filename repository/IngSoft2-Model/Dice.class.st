@@ -14,14 +14,14 @@ Dice class >> assertValidDiceValue: aValue [
 		ifTrue: [ AssertionFailure signal: 'A dice must have 3 or more faces' ]
 ]
 
-{ #category : #initialization }
+{ #category : #'instance creation' }
 Dice class >> faces: aFacesNumber withStrategy: aStrategy [
 	self assertValidDiceValue: aFacesNumber.
-	^ self new initializeWithNumberOfFaces: aFacesNumber AndStrategy: aStrategy
+	^ self new initializeWithNumberOfFaces: aFacesNumber andStrategy: aStrategy
 ]
 
 { #category : #initialization }
-Dice >> initializeWithNumberOfFaces: aNumberOfFaces AndStrategy: aStrategy [
+Dice >> initializeWithNumberOfFaces: aNumberOfFaces andStrategy: aStrategy [
 	quantityFaces := aNumberOfFaces.
 	strategy := aStrategy
 ]

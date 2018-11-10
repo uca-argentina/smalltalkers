@@ -14,7 +14,7 @@ Board class >> assertWithValidValueOfLength: aValue [
 		ifTrue: [ AssertionFailure signal: 'You cant create a table with negative values of positions' ]
 ]
 
-{ #category : #initialization }
+{ #category : #'instance creation' }
 Board class >> effects: effectsCollection [
 	self assertWithValidValueOfLength: effectsCollection size.
 	^ self new initializeWithEffects: effectsCollection
@@ -27,7 +27,7 @@ Board >> applyEffect: aGame to: aPlayer [
 		on: aGame
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 Board >> effectAt: aPosition [
 	^ effects at: (aPosition + 1)
 ]

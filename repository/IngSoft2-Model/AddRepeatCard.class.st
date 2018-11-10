@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #accessing }
+{ #category : #applying }
 AddRepeatCard >> applyTo: aPlayer on: aGame [
-	aGame player: aPlayer  addCard: Repeat new.
+	aGame player: aPlayer addCard: Repeat new
 ]

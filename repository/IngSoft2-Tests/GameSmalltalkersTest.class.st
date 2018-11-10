@@ -1,5 +1,5 @@
 Class {
-	#name : #GameTest,
+	#name : #GameSmalltalkersTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'rodri',
@@ -13,7 +13,7 @@ Class {
 }
 
 { #category : #'test-support' }
-GameTest >> gamedWithDiceSequence: diceSequence andEffectSequence: effectSequence [
+GameSmalltalkersTest >> gamedWithDiceSequence: diceSequence andEffectSequence: effectSequence [
 	|game board |
 	chargedStrategy := LoadedStrategy withSequence: diceSequence.
 	dice := Dice faces: 4 withStrategy: chargedStrategy.
@@ -22,7 +22,7 @@ GameTest >> gamedWithDiceSequence: diceSequence andEffectSequence: effectSequenc
 		add: dice;
 		add: dice.
 	board := Board effects: effectSequence.
-	game := Game
+	game := GameSmalltalkers
 		playedBy: players
 		onBoard: board
 		withDices: diceCollection
@@ -31,7 +31,7 @@ GameTest >> gamedWithDiceSequence: diceSequence andEffectSequence: effectSequenc
 ]
 
 { #category : #running }
-GameTest >> setUp [
+GameSmalltalkersTest >> setUp [
 	| RodriCardCollection FranCardCollection overload speed |
 	speed := Speed new.
 	overload := Overload new.
@@ -52,7 +52,7 @@ GameTest >> setUp [
 ]
 
 { #category : #tests }
-GameTest >> testAdvancePlayer [
+GameSmalltalkersTest >> testAdvancePlayer [
 	| speedUp wormHole effectSequence game |
 	speedUp := SpeedUp new.
 	wormHole := WormHole new.
@@ -75,25 +75,25 @@ GameTest >> testAdvancePlayer [
 	game player: rodri advance: 1.
 	self assert: (game positionOf: rodri) equals: 0.
 	self assert: (game lapsOf: rodri) equals: 3.
-	game player: rodri advance: -1.
+	game player: rodri goBack: 1.
 	self assert: (game positionOf: rodri) equals: 2.
 	self assert: (game lapsOf: rodri) equals: 2.
-	game player: rodri advance: -3.
+	game player: rodri goBack: 3.
 	self assert: (game positionOf: rodri) equals: 2.
 	self assert: (game lapsOf: rodri) equals: 1.
-	game player: rodri advance: -1.
+	game player: rodri goBack: 1.
 	self assert: (game positionOf: rodri) equals: 1.
 	self assert: (game lapsOf: rodri) equals: 1.
-	game player: rodri advance: -4.
+	game player: rodri goBack: 4.
 	self assert: (game positionOf: rodri) equals: 0.
 	self assert: (game lapsOf: rodri) equals: 0.
-	game player: rodri advance: -6.
+	game player: rodri goBack: 6.
 	self assert: (game positionOf: rodri) equals: 0.
 	self assert: (game lapsOf: rodri) equals: -2
 ]
 
 { #category : #tests }
-GameTest >> testChangingTurn [
+GameSmalltalkersTest >> testChangingTurn [
 	| speedUp wormHole effectSequence game |
 	speedUp := SpeedUp new.
 	wormHole := WormHole new.
@@ -117,7 +117,7 @@ GameTest >> testChangingTurn [
 ]
 
 { #category : #tests }
-GameTest >> testInstanceCreationGameAndAccesing [
+GameSmalltalkersTest >> testInstanceCreationGameAndAccesing [
 	| game speedUp wormHole effectSequence |
 	speedUp := SpeedUp new.
 	wormHole := WormHole new.
@@ -131,7 +131,7 @@ GameTest >> testInstanceCreationGameAndAccesing [
 ]
 
 { #category : #tests }
-GameTest >> testPlayingGameWithCancellationCard [
+GameSmalltalkersTest >> testPlayingGameWithCancellationCard [
 	| game effectSequence addCancellationCard  withoutEffect |
 	withoutEffect := WithoutEffect new.
 	addCancellationCard := AddCancellationCard new.
@@ -185,7 +185,7 @@ GameTest >> testPlayingGameWithCancellationCard [
 ]
 
 { #category : #tests }
-GameTest >> testPlayingGameWithEffects [
+GameSmalltalkersTest >> testPlayingGameWithEffects [
 	| game effectSequence ranking wormHole speedUp moonWalk atomicBomb anotherMoonWalk withoutEffect |
 	wormHole := WormHole new.
 	withoutEffect := WithoutEffect new.
@@ -238,7 +238,7 @@ GameTest >> testPlayingGameWithEffects [
 ]
 
 { #category : #tests }
-GameTest >> testPlayingGameWithPermanentCardEffectsOnly [
+GameSmalltalkersTest >> testPlayingGameWithPermanentCardEffectsOnly [
 	| game effectSequence addOverloadCard addAccelerationCard withoutEffect |
 	withoutEffect := WithoutEffect new.
 	addOverloadCard := AddOverloadCard new.
@@ -288,7 +288,7 @@ GameTest >> testPlayingGameWithPermanentCardEffectsOnly [
 ]
 
 { #category : #tests }
-GameTest >> testPlayingGameWithRedoCard [
+GameSmalltalkersTest >> testPlayingGameWithRedoCard [
 	| game effectSequence addRedoCard addAccelerationCard withoutEffect |
 	withoutEffect := WithoutEffect new.
 	addRedoCard := AddRedoCard new.
@@ -344,7 +344,7 @@ GameTest >> testPlayingGameWithRedoCard [
 ]
 
 { #category : #tests }
-GameTest >> testPlayingGameWithRepeatCard [
+GameSmalltalkersTest >> testPlayingGameWithRepeatCard [
 	| game effectSequence wormHole speedUp moonWalk atomicBomb anotherMoonWalk withoutEffect addRepeatCard |
 	addRepeatCard := AddRepeatCard new.
 	wormHole := WormHole new.
@@ -397,7 +397,7 @@ GameTest >> testPlayingGameWithRepeatCard [
 ]
 
 { #category : #tests }
-GameTest >> testPlayingGameWithoutEffects [
+GameSmalltalkersTest >> testPlayingGameWithoutEffects [
 	| game effectSequence ranking withoutEffect |
 	withoutEffect := WithoutEffect new.
 	effectSequence := OrderedCollection new.

@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #accessing }
+{ #category : #applying }
 AddAccelerationCard >> applyTo: aPlayer on: aGame [
 	aGame player: aPlayer addCard: Acceleration new
 ]

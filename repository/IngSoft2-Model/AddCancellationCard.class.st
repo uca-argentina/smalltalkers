@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #accessing }
+{ #category : #applying }
 AddCancellationCard >> applyTo: aPlayer on: aGame [
-	aGame player: aPlayer  addCard: Cancellation new.
+	aGame player: aPlayer addCard: Cancellation new
 ]

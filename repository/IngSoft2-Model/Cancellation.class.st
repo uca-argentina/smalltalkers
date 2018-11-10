@@ -2,7 +2,6 @@ Class {
 	#name : #Cancellation,
 	#superclass : #InstantaneousCard,
 	#instVars : [
-		'name',
 		'target',
 		'permanentCards'
 	],
@@ -38,5 +37,5 @@ Cancellation >> player: aPlayer useAgainst: anotherPlayer on: aGame [
 
 { #category : #accessing }
 Cancellation >> selectTarget: aCardName [
-target := aCardName
+	target := aCardName
 ]

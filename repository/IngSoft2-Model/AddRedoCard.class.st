@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #accessing }
+{ #category : #applying }
 AddRedoCard >> applyTo: aPlayer on: aGame [
-	aGame player: aPlayer  addCard: Redo new.
+	aGame player: aPlayer addCard: Redo new
 ]

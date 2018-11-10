@@ -19,7 +19,7 @@ BoardTest >> gameWithDiceRolling: effectsCollection [
 		add: dice;
 		add: dice.
 	board := Board effects: effectsCollection.
-	game := Game
+	game := GameSmalltalkers
 		playedBy: players
 		onBoard: board
 		withDices: diceCollection
@@ -212,7 +212,7 @@ BoardTest >> testInstanceCreationAndAccessing [
 BoardTest >> testInstanceCreationRandomEffects [
 	| game effect sequence |
 	sequence := OrderedCollection new.
-	effect := RandomCreatorEffects new.
+	effect := RandomEffectCreator new.
 	sequence
 		add: effect nextEffect;
 		add: effect nextEffect;
