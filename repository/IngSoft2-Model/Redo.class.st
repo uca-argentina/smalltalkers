@@ -4,8 +4,7 @@ Class {
 	#instVars : [
 		'name',
 		'cards',
-		'target',
-		'effect'
+		'target'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -27,7 +26,8 @@ Redo >> name [
 ]
 
 { #category : #playing }
-Redo >> useAgainst: aPlayer on: aGame [
+Redo >> player: aPlayer useAgainst: anotherPlayer on: aGame [
+	| effect |
 	effect := aGame cardsHistory last effect.
-	cards detect: [ :each | each name = effect ] ifFound: [ :found | found useAgainst: aPlayer on: aGame ]
+	cards detect: [ :each | each name = effect ] ifFound: [ :found | found player: aGame turn useAgainst: anotherPlayer on: aGame ]
 ]

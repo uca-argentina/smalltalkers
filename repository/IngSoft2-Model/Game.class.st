@@ -14,7 +14,7 @@ Class {
 		'state',
 		'cardEffectAdvanceNumber',
 		'cardsHistory',
-		'playerLastEffect'
+		'effectsHistory'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -27,7 +27,7 @@ Game class >> playedBy: players onBoard: aBoard withDices: diceCollection withWi
 { #category : #playing }
 Game >> advanceAndApplyEffectTo: aPlayer [
 	self player: aPlayer advance: (aPlayer roll: diceCollection).
-	playerLastEffect at: aPlayer put: (self board effectAt: (self positionOf: aPlayer)).
+	effectsHistory add: (EffectHistory with: aPlayer and: (self board effectAt: (self positionOf: aPlayer))).
 	(self board effectAt: (self positionOf: aPlayer)) applyTo: aPlayer on: self.
 	self changeTurn
 ]
@@ -35,6 +35,7 @@ Game >> advanceAndApplyEffectTo: aPlayer [
 { #category : #playing }
 Game >> assertIsTurnOf: aPlayer [
 	turnPlayer = aPlayer
+		ifTrue: [ ^ true ]
 		ifFalse: [ GameException signal: 'it is not your turn' ]
 ]
 
@@ -54,6 +55,11 @@ Game >> changeTurn [
 	order > players size
 		ifTrue: [ order := 1 ].
 	turnPlayer := players at: order
+]
+
+{ #category : #accessing }
+Game >> effectsHistory [
+	^ effectsHistory 
 ]
 
 { #category : #testing }
@@ -79,8 +85,7 @@ Game >> initializeWithPlayers: playersCollection onBoard: aBoard withDices: aDic
 	cardEffectAdvanceNumber := Dictionary new.
 	players do: [ :player | cardEffectAdvanceNumber at: player put: 0 ].
 	cardsHistory := OrderedCollection new.
-	playerLastEffect := Dictionary new.
-	players do: [ :player | playerLastEffect at: player put: 0 ].
+	effectsHistory := OrderedCollection new.
 ]
 
 { #category : #accessing }
@@ -137,15 +142,10 @@ Game >> player: aPlayer useCard: aCardName against: anotherPlayer [
 	players
 		detect: [ :each | each = aPlayer ]
 		ifFound: [ :found | 
-			(found useCardNamed: aCardName) useAgainst: anotherPlayer on: self.
+			(found useCardNamed: aCardName) player: found useAgainst: anotherPlayer on: self.
 			found removeCard: aCardName ].
 	aCardName = 'Redo'
 		ifFalse: [ cardsHistory add: (CardHistory from: aPlayer to: anotherPlayer with: aCardName) ]
-]
-
-{ #category : #accessing }
-Game >> playerLastEffect [
-	^ playerLastEffect 
 ]
 
 { #category : #accessing }

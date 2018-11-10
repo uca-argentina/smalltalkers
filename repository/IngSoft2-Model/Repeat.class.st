@@ -17,7 +17,12 @@ Repeat >> name [
 	^ name
 ]
 
-{ #category : #'as yet unclassified' }
-Repeat >> useAgainst: aPlayer on: aGame [
-	(aGame playerLastEffect at: aPlayer) applyTo: aPlayer on: aGame
+{ #category : #playing }
+Repeat >> player: aPlayer useAgainst: anotherPlayer on: aGame [
+	| effect player |
+	effect := aGame effectsHistory last effect.
+	player := aGame effectsHistory last player.
+	effect applyTo: player on: aGame 
+	
+	
 ]

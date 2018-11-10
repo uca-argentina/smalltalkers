@@ -26,7 +26,8 @@ Overload >> opposeEffect [
 ]
 
 { #category : #playing }
-Overload >> useAgainst: aPlayer on: aGame [
-	aGame assertIsTurnOf: aPlayer.
-	aGame modifyCardEffectAdvanceNumberOf: aPlayer with: extraNumber.
+Overload >> player: aPlayer useAgainst: anotherPlayer on: aGame [
+	(aGame assertIsTurnOf: aPlayer)
+		ifTrue: [ aGame modifyCardEffectAdvanceNumberOf: anotherPlayer with: extraNumber ]
+		ifFalse:[AssertionFailure signal: 'Cant use that card yet']
 ]

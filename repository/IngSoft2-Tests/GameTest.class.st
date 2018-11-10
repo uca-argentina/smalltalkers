@@ -146,23 +146,36 @@ GameTest >> testPlayingGameWithCancellationCard [
 		add: withoutEffect;
 		add: withoutEffect;
 		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
 		add: withoutEffect.
 	game := self gamedWithDiceSequence: #(2 2 2 2) andEffectSequence: effectSequence.
-	self assert: game board length equals: 10.
+	self assert: game board length equals: 16.
 	game play: rodri.
 	self assert: (game positionOf: rodri) equals: 4.
-	game player: rodri useCard: 'Overload' against: fran.
 	game play: fran.
-	self assert: (game positionOf: fran) equals: 2.
+	self assert: (game positionOf: fran) equals: 4.
 	self should: [game player: fran useCard: 'Cancellation' against: fran] raise: AssertionFailure.
 	self should: [game player: rodri useCard: 'Cancellation' against: rodri] raise: AssertionFailure.
+	game player: rodri useCard: 'Overload' against: fran.
 	game play: rodri.
 	self assert: (game positionOf: rodri) equals: 8.
 	self should: [game player: rodri useCard: 'Cancellation' against: fran] raise: AssertionFailure.
-	game player: rodri targetForCancellationCardIs: 'Overload'.
-	game player: rodri useCard: 'Cancellation' against: fran.
 	game play: fran.
 	self assert: (game positionOf: fran) equals: 6.
+	game player: rodri targetForCancellationCardIs: 'Overload'.
+	game player: rodri useCard: 'Cancellation' against: fran.
+	game play: rodri.
+	self assert: (game positionOf: rodri) equals: 12.
+	game play: fran.
+	self assert: (game positionOf: fran) equals: 10.
+	
+	
+	
 	
 	
 	
@@ -240,6 +253,8 @@ GameTest >> testPlayingGameWithPermanentCardEffectsOnly [
 		add: withoutEffect;
 		add: addOverloadCard;
 		add: withoutEffect;
+		add: addAccelerationCard;
+		add: withoutEffect;
 		add: withoutEffect;
 		add: withoutEffect;
 		add: withoutEffect;
@@ -251,21 +266,25 @@ GameTest >> testPlayingGameWithPermanentCardEffectsOnly [
 		add: withoutEffect;
 		add: withoutEffect.
 	game := self gamedWithDiceSequence: #(3 3 3 3) andEffectSequence: effectSequence.
-	self assert: game board length equals: 18.
+	self assert: game board length equals: 20.
 	game play: rodri.
 	self assert: (game positionOf: rodri) equals: 6.
+	game play: fran.
+	self assert: (game positionOf: fran) equals: 6.
 	game player: rodri useCard: 'Overload' against: fran.
 	game player: rodri useCard: 'Overload' against: fran.
 	self should: [game player: rodri useCard: 'Overload' against: fran] raise: AssertionFailure.
-	game play: fran.
-	self assert: (game positionOf: fran) equals: 2.
-	game player: fran useCard: 'Speed' against: rodri.
-	game player: fran useCard: 'Acceleration' against: 'all'.
 	game play: rodri.
-	
-	self assert: (game positionOf: rodri) equals: 14.
+	self assert: (game positionOf: rodri) equals: 12.
+	game player: fran useCard: 'Speed' against: rodri.
 	game play: fran.
-	self assert: (game positionOf: fran) equals: 5
+	self assert: (game positionOf: fran) equals: 8.
+	game play: rodri.
+	self assert: (game positionOf: rodri) equals: 19.
+	game player: fran useCard: 'Acceleration' against: 'all'.
+	game play: fran.
+	self assert: (game positionOf: fran) equals: 11.
+	
 ]
 
 { #category : #tests }
@@ -278,49 +297,49 @@ GameTest >> testPlayingGameWithRedoCard [
 	effectSequence
 		add: withoutEffect;
 		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: addRedoCard;
+		add: addRedoCard;
 		add: addAccelerationCard;
 		add: withoutEffect;
 		add: withoutEffect;
+		add: withoutEffect;
 		add: addRedoCard;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
+		add: withoutEffect;
 		add: addRedoCard;
 		add: withoutEffect;
-		add: withoutEffect;
-		add: withoutEffect;
-		add: withoutEffect;
-		add: withoutEffect;
-		add: withoutEffect;
-		add: withoutEffect;
-		add: withoutEffect;
-		add: withoutEffect;
-		add: withoutEffect;
-		add: withoutEffect;
-		add: withoutEffect;
-		add: withoutEffect;
-		add: withoutEffect;
-		add: withoutEffect;
-		add: withoutEffect;
-		add: addRedoCard.
-	game := self gamedWithDiceSequence: #(3 3 3 3) andEffectSequence: effectSequence.
+		add: withoutEffect.
+	game := self gamedWithDiceSequence: #(3 3 5 2) andEffectSequence: effectSequence.
 	self assert: game board length equals: 24.
 	game play: rodri.
 	self assert: (game positionOf: rodri) equals: 6.
+	game play: fran.
+	self assert: (game positionOf: fran) equals: 7.
 	game player: rodri useCard: 'Overload' against: fran.
 	self should: [game player: rodri useCard: 'Overload' against: fran] raise: AssertionFailure.
 	game player: rodri useCard: 'Redo' against: fran. 
-	game play: fran.
-	self assert: (game positionOf: fran) equals: 2.
+	game play: rodri.
+	self assert: (game positionOf: rodri) equals: 12.
 	game player: fran useCard: 'Speed' against: rodri.
 	game player: fran useCard: 'Acceleration' against: 'all'.
-	game play: rodri.
-	self assert: (game positionOf: rodri) equals: 14.
 	game play: fran.
-	self assert: (game positionOf: fran) equals: 5.
+	self assert: (game positionOf: fran) equals: 11.
 	game player: fran useCard: 'Redo' against: 'all'. 
 	game play: rodri.
-	self assert: (game positionOf: rodri) equals: 23.
+	self assert: (game positionOf: rodri) equals: 21.
 	game player: rodri useCard: 'Redo' against: 'all'.
 	game play: fran.
-	self assert: (game positionOf: fran) equals: 10.
+	self assert: (game positionOf: fran) equals: 17.
 	
 ]
 
@@ -368,10 +387,11 @@ GameTest >> testPlayingGameWithRepeatCard [
 	self assert: (game positionOf: fran) equals: 3.
 	game play: rodri.
 	self assert: (game positionOf: rodri) equals: 16.
-	game play: fran.
-	self assert: (game positionOf: fran) equals: 6.
 	game player: fran useCard: 'Repeat' against: rodri.
 	self assert: (game positionOf: rodri) equals: 20.
+	game play: fran.
+	self assert: (game positionOf: fran) equals: 6.
+	
 	
 	
 ]

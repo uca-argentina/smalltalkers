@@ -25,6 +25,7 @@ extraNumber := -1
 ]
 
 { #category : #playing }
-Acceleration >> useAgainst: aPlayer on: aGame [
-	aGame players do: [ :player | aGame modifyCardEffectAdvanceNumberOf: player with: extraNumber ]
+Acceleration >> player: aPlayer useAgainst: anotherPlayer on: aGame [
+	(aGame assertIsTurnOf: aPlayer)
+		ifTrue: [ aGame players do: [ :player | aGame modifyCardEffectAdvanceNumberOf: player with: extraNumber ] ]
 ]
