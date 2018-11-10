@@ -8,7 +8,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #initialization }
+{ #category : #'instance creation' }
 LoadedStrategy class >> withSequence: aSequence [
 	^ self new initializeWithSequence: aSequence
 ]
@@ -19,7 +19,7 @@ LoadedStrategy >> initializeWithSequence: aSequence [
 	nextPosition := 1
 ]
 
-{ #category : #accessing }
+{ #category : #iterating }
 LoadedStrategy >> next: aQuantityFace [
 	| previousPosition |
 	nextPosition > sequence size

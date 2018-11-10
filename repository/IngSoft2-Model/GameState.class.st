@@ -1,22 +1,22 @@
 Class {
-	#name : #PlayerState,
+	#name : #GameState,
 	#superclass : #Object,
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #testing }
-PlayerState >> hasEnded [
+GameState >> hasEnded [
 	^ false
 ]
 
 { #category : #accessing }
-PlayerState >> nextStateOf: aPlayer on: aGame [
+GameState >> nextStateOf: aPlayer on: aGame [
 	^ (aGame lapsOf: aPlayer) >= aGame winningLaps
 		ifTrue: [ GameEnded withWinner: aPlayer ]
 		ifFalse: [ self ]
 ]
 
 { #category : #accessing }
-PlayerState >> winner [
+GameState >> winner [
 	GameException signal: 'Game isnt finished'
 ]

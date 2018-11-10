@@ -14,7 +14,7 @@ Player class >> assertWithValidName: aName [
 		ifTrue: [ AssertionFailure signal: 'You cant create a player without a name' ]
 ]
 
-{ #category : #initialization }
+{ #category : #'instance creation' }
 Player class >> named: aName with: aCardCollection [
 	self assertWithValidName: aName.
 	^ self new initializeWithName: aName andCardCollection: aCardCollection
@@ -29,15 +29,14 @@ Player >> addCard: aCard [
 Player >> cancellationTargetIs: aTarget [
 	cardCollection
 		detect: [ :each | each name = 'Cancellation' ]
-		ifFound: [ :found | 
-			found selectTarget: aTarget  ]
+		ifFound: [ :found | found selectTarget: aTarget ]
 		ifNone: [ AssertionFailure signal: 'You dont have that card' ]
 ]
 
 { #category : #initialization }
 Player >> initializeWithName: aName andCardCollection: aCardCollection [
 	name := aName.
-	cardCollection := aCardCollection.
+	cardCollection := aCardCollection
 ]
 
 { #category : #accessing }

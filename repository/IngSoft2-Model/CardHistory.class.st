@@ -1,10 +1,9 @@
 Class {
 	#name : #CardHistory,
-	#superclass : #Object,
+	#superclass : #History,
 	#instVars : [
 		'source',
-		'target',
-		'effect'
+		'target'
 	],
 	#category : #'IngSoft2-Model'
 }

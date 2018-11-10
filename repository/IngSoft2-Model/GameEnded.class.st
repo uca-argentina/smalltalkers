@@ -1,18 +1,18 @@
 Class {
 	#name : #GameEnded,
-	#superclass : #Object,
+	#superclass : #GameState,
 	#instVars : [
 		'player'
 	],
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 GameEnded class >> withWinner: aPlayer [
 	^ self new initializeWithWinner: aPlayer
 ]
 
-{ #category : #initialization }
+{ #category : #testing }
 GameEnded >> hasEnded [
 	^ true
 ]
@@ -22,7 +22,7 @@ GameEnded >> initializeWithWinner: aPlayer [
 	player := aPlayer
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 GameEnded >> winner [
 	^ player
 ]

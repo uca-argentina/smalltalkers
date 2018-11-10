@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #accessing }
+{ #category : #iterating }
 RollStrategy >> next: aQuantityOfFaces [
 	self subclassResponsibility
 ]

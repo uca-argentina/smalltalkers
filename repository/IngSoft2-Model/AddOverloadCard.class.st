@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #accessing }
+{ #category : #applying }
 AddOverloadCard >> applyTo: aPlayer on: aGame [
-	aGame player: aPlayer  addCard: Overload new.
+	aGame player: aPlayer addCard: Overload new
 ]

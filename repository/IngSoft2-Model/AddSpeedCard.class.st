@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #accessing }
+{ #category : #applying }
 AddSpeedCard >> applyTo: aPlayer on: aGame [
-	aGame player: aPlayer  addCard: Speed new.
+	aGame player: aPlayer addCard: Speed new
 ]

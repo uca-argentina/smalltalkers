@@ -12,7 +12,7 @@ RandomStrategy >> initialize [
 	rand := Random new.
 ]
 
-{ #category : #accessing }
+{ #category : #iterating }
 RandomStrategy >> next: aQuantityFace [
 	^ rand nextInt: aQuantityFace
 ]

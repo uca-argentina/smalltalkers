@@ -7,12 +7,12 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #initialization }
+{ #category : #'instance creation' }
 MoonWalk class >> goBack: aNumber [
 	^ self new initializeWithGoBack: aNumber.
 ]
 
-{ #category : #accessing }
+{ #category : #applying }
 MoonWalk >> applyTo: aPlayer on: aGame [
 	| players |
 	players := aGame players reject: [ :player | player = aPlayer ].

@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #accessing }
+{ #category : #applying }
 WormHole >> applyTo: aPlayer on: aGame [
-	aGame player: aPlayer advance: -4.
+	aGame player: aPlayer goBack: 4.
 ]
