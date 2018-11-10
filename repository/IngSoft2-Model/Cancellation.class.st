@@ -26,17 +26,17 @@ Cancellation >> name [
 	^ name
 ]
 
-{ #category : #accessing }
-Cancellation >> selectTarget: aCardName [
-target := aCardName
-]
-
-{ #category : #'as yet unclassified' }
-Cancellation >> useAgainst: aPlayer on: aGame [
+{ #category : #playing }
+Cancellation >> player: aPlayer useAgainst: anotherPlayer on: aGame [
 	| card |
 	target = 'none'
 		ifTrue: [ AssertionFailure signal: 'You have to declare a target first' ]
 		ifFalse: [ card := permanentCards detect: [ :each | each name = target ].
-			aGame removePlayedCardAffecting: aPlayer name with: card name.
-			card useAgainst: (aGame players detect: [ :each | each = aPlayer ]) on: aGame ]
+			aGame removePlayedCardAffecting: anotherPlayer name with: card name.
+			card player: aPlayer useAgainst: anotherPlayer on: aGame ]
+]
+
+{ #category : #accessing }
+Cancellation >> selectTarget: aCardName [
+target := aCardName
 ]

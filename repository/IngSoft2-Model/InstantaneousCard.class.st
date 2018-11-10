@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
-InstantaneousCard >> useAgainst: aPlayer on: aGame [
+{ #category : #playing }
+InstantaneousCard >> player: aPlayer useAgainst: anotherPlayer on: aGame [
 	self subclassResponsibility
 ]
