@@ -84,9 +84,10 @@ GameSmalltalkers >> initializeWithPlayers: playersCollection onBoard: aBoard wit
 			playersLaps at: player put: 0.
 			playerScore at: player put: 0.
 			cardEffectAdvanceNumber at: player put: 0 ].
-	state := GameState new.
+	state := GameNotEnded new.
 	cardsHistory := OrderedCollection new.
-	effectsHistory := OrderedCollection new
+	effectsHistory := OrderedCollection new.
+	effectsHistory add: (EffectHistory with: self and: (board effectAt: 0))
 ]
 
 { #category : #accessing }
@@ -156,7 +157,8 @@ GameSmalltalkers >> player: aPlayer useCard: aCardName against: anotherPlayer [
 		detect: [ :each | each = aPlayer ]
 		ifFound: [ :found | 
 			(found useCardNamed: aCardName) player: found useAgainst: anotherPlayer on: self.
-			found removeCard: aCardName ].
+			found removeCard: aCardName ]
+		ifNone: [ AssertionFailure signal: 'This player is not part of the game' ].
 	aCardName = 'Redo'
 		ifFalse: [ cardsHistory add: (CardHistory from: aPlayer to: anotherPlayer with: aCardName) ]
 ]

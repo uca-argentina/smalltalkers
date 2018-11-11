@@ -30,7 +30,7 @@ Player >> cancellationTargetIs: aTarget [
 	cardCollection
 		detect: [ :each | each name = 'Cancellation' ]
 		ifFound: [ :found | found selectTarget: aTarget ]
-		ifNone: [ AssertionFailure signal: 'You dont have that card' ]
+		ifNone: [ AssertionFailure signal: 'You dont have Cancellation Card' ]
 ]
 
 { #category : #initialization }
@@ -46,7 +46,10 @@ Player >> name [
 
 { #category : #playing }
 Player >> removeCard: aCardName [
-	cardCollection detect: [ :each | each name = aCardName ] ifFound: [ :found | cardCollection remove: found ]
+	cardCollection
+		detect: [ :each | each name = aCardName ]
+		ifFound: [ :found | cardCollection remove: found ]
+		ifNone: [ AssertionFailure signal: 'You dont have this card' ]
 ]
 
 { #category : #playing }

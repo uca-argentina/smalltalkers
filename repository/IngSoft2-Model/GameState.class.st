@@ -6,17 +6,10 @@ Class {
 
 { #category : #testing }
 GameState >> hasEnded [
-	^ false
-]
-
-{ #category : #accessing }
-GameState >> nextStateOf: aPlayer on: aGame [
-	^ (aGame lapsOf: aPlayer) >= aGame winningLaps
-		ifTrue: [ GameEnded withWinner: aPlayer ]
-		ifFalse: [ self ]
+	^ self subclassResponsibility
 ]
 
 { #category : #accessing }
 GameState >> winner [
-	GameException signal: 'Game isnt finished'
+	^ self subclassResponsibility
 ]
