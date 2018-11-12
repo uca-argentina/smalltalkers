@@ -10,7 +10,6 @@ Class {
 		'playersPositions',
 		'playersLaps',
 		'winningLaps',
-		'playerScore',
 		'state',
 		'cardEffectAdvanceNumber',
 		'cardsHistory',
@@ -76,13 +75,11 @@ GameSmalltalkers >> initializeWithPlayers: playersCollection onBoard: aBoard wit
 	winningLaps := aNumber.
 	playersPositions := Dictionary new.
 	playersLaps := Dictionary new.
-	playerScore := Dictionary new.
 	cardEffectAdvanceNumber := Dictionary new.
 	players
 		do: [ :player | 
 			playersPositions at: player put: 0.
 			playersLaps at: player put: 0.
-			playerScore at: player put: 0.
 			cardEffectAdvanceNumber at: player put: 0 ].
 	state := GameNotEnded new.
 	cardsHistory := OrderedCollection new.
@@ -93,17 +90,6 @@ GameSmalltalkers >> initializeWithPlayers: playersCollection onBoard: aBoard wit
 { #category : #accessing }
 GameSmalltalkers >> lapsOf: aPlayer [
 	^ playersLaps at: aPlayer
-]
-
-{ #category : #playing }
-GameSmalltalkers >> makeScoreOfPlayers [
-	| lapScore finalScore positionScore |
-	players
-		do: [ :player | 
-			lapScore := (playersLaps at: player) * board length.
-			positionScore := playersPositions at: player.
-			finalScore := lapScore + positionScore.
-			playerScore at: player put: finalScore ]
 ]
 
 { #category : #playing }
@@ -175,8 +161,9 @@ GameSmalltalkers >> positionOf: aPlayer [
 
 { #category : #accessing }
 GameSmalltalkers >> rankPlayers [
-	self makeScoreOfPlayers.
-	^ players asSortedCollection: [ :player | self scoreOf: player ] descending
+	| ranking |
+	ranking := Ranking withPlayers: players.
+	^ ranking makeScoreOfPlayersOn: self
 ]
 
 { #category : #playing }
@@ -185,11 +172,6 @@ GameSmalltalkers >> removePlayedCardAffecting: aPlayerName with: aCardName [
 		detect: [ :each | each targetName = aPlayerName and: each effect = aCardName ]
 		ifFound: [ :found | cardsHistory remove: found ]
 		ifNone: [ AssertionFailure signal: 'That player is not affected by that card' ]
-]
-
-{ #category : #accessing }
-GameSmalltalkers >> scoreOf: aPlayer [
-	^ playerScore at: aPlayer
 ]
 
 { #category : #accessing }

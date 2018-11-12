@@ -199,8 +199,9 @@ GameSmalltalkersTest >> testPlayingGameWithCancellationCard [
 
 { #category : #tests }
 GameSmalltalkersTest >> testPlayingGameWithCards [
-	| game effectSequence addCancellationCard withoutEffect addAcelerationCard addSpeedCard addOverloadCard addRedoCard addRepeatCard |
+	| game effectSequence addCancellationCard withoutEffect addAcelerationCard addSpeedCard addOverloadCard addRedoCard addRepeatCard speedUp ranking |
 	withoutEffect := WithoutEffect new.
+	speedUp := SpeedUp new.
 	addCancellationCard := AddCancellationCard new.
 	addAcelerationCard := AddAccelerationCard new.
 	addSpeedCard := AddSpeedCard new.
@@ -214,7 +215,7 @@ GameSmalltalkersTest >> testPlayingGameWithCards [
 		add: withoutEffect;
 		add: addAcelerationCard;
 		add: addCancellationCard;
-		add: withoutEffect;
+		add: speedUp;
 		add: addRedoCard;
 		add: addCancellationCard;
 		add: withoutEffect;
@@ -222,12 +223,75 @@ GameSmalltalkersTest >> testPlayingGameWithCards [
 		add: addRepeatCard;
 		add: withoutEffect;
 		add: addSpeedCard;
-		add: withoutEffect;
+		add: addSpeedCard;
 		add: addOverloadCard;
 		add: withoutEffect.
-	game := self gamedWithDiceSequence: #(2 2 2 2) andEffectSequence: effectSequence.
+	game := self gamedWithDiceSequence: #(2 2 2 3) andEffectSequence: effectSequence.
 	self assert: game board length equals: 16.
-	
+	game play: rodri.
+	self assert: game turn equals: fran.
+	self assert: (game positionOf: rodri) equals: 4.
+	self assert: (game positionOf: fran) equals: 0.
+	game play: fran.
+	self assert: game turn equals: rodri.
+	self assert: (game positionOf: rodri) equals: 4.
+	self assert: (game positionOf: fran) equals: 9.
+	game player: rodri useCard: 'Speed' against: rodri.
+	game player: rodri useCard: 'Overload' against: fran.
+	self should: [ game player: fran targetForCancellationCardIs: 'Overload' ] raise: AssertionFailure.
+	game play: rodri.
+	self assert: game turn equals: fran.
+	self assert: (game positionOf: rodri) equals: 9.
+	self assert: (game positionOf: fran) equals: 9.
+	game player: fran useCard: 'Overload' against: rodri.
+	game play: fran.
+	self assert: game turn equals: rodri.
+	self assert: (game positionOf: rodri) equals: 9.
+	self assert: (game positionOf: fran) equals: 12.
+	game play: rodri.
+	self assert: game turn equals: fran.
+	game player: fran useCard: 'Speed' against: fran.
+	game player: rodri targetForCancellationCardIs: 'Overload'.
+	game player: rodri useCard: 'Cancellation' against: rodri.
+	self assert: (game positionOf: rodri) equals: 12.
+	self assert: (game positionOf: fran) equals: 12.
+	self should: [ game play: rodri ] raise: GameException.
+	game play: fran.
+	self assert: (game positionOf: rodri) equals: 12.
+	self assert: (game positionOf: fran) equals: 0.
+	game play: rodri.
+	self assert: (game positionOf: rodri) equals: 1.
+	self assert: (game positionOf: fran) equals: 0.
+	game player: fran useCard: 'Speed' against: fran.
+	self should: [ game player: fran useCard: 'Speed' against: fran ] raise: AssertionFailure.
+	game play: fran.
+	self assert: (game positionOf: rodri) equals: 1.
+	self assert: (game positionOf: fran) equals: 9.
+	game player: rodri targetForCancellationCardIs: 'Speed'.
+	game player: rodri useCard: 'Cancellation' against: fran.
+	game play: rodri.
+	self assert: (game positionOf: fran) equals: 9.
+	self assert: (game positionOf: rodri) equals: 6.
+	game play: fran.
+	self assert: (game positionOf: rodri) equals: 6.
+	self assert: (game positionOf: fran) equals: 13.
+	game play: rodri.
+	self assert: (game positionOf: rodri) equals: 11.
+	self assert: (game positionOf: fran) equals: 13.
+	game player: fran useCard: 'Speed' against: fran.
+	game player: rodri useCard: 'Redo' against: rodri.
+	game play: fran.
+	self assert: (game positionOf: rodri) equals: 11.
+	self assert: (game positionOf: fran) equals: 2.
+	self assert: (game lapsOf: fran) equals: 2.
+	self assert: (game lapsOf: rodri) equals: 1.
+	self assert: game hasEnded equals: true.
+	self assert: game winner equals: fran.
+	ranking := game rankPlayers.
+	self assert: (ranking playerAtPosition: 1) equals: fran.
+	self assert: (ranking playerAtPosition: 2) equals: rodri.
+	self assert: (ranking scoreOf: fran) equals: 34.
+	self assert: (ranking scoreOf: rodri) equals: 27
 ]
 
 { #category : #tests }
@@ -277,10 +341,10 @@ GameSmalltalkersTest >> testPlayingGameWithEffects [
 	self assert: game hasEnded equals: true.
 	self assert: game winner equals: rodri.
 	ranking := game rankPlayers.
-	self assert: (ranking at: 1) equals: rodri.
-	self assert: (ranking at: 2) equals: fran.
-	self assert: (game scoreOf: rodri) equals: 22.
-	self assert: (game scoreOf: fran) equals: 3
+	self assert: (ranking playerAtPosition: 1) equals: rodri.
+	self assert: (ranking playerAtPosition: 2) equals: fran.
+	self assert: (ranking scoreOf: rodri) equals: 22.
+	self assert: (ranking scoreOf: fran) equals: 3
 ]
 
 { #category : #tests }
@@ -477,8 +541,8 @@ GameSmalltalkersTest >> testPlayingGameWithoutEffects [
 	self assert: game hasEnded equals: true.
 	self assert: game winner equals: fran.
 	ranking := game rankPlayers.
-	self assert: (ranking at: 1) equals: fran.
-	self assert: (ranking at: 2) equals: rodri.
-	self assert: (game scoreOf: fran) equals: 24.
-	self assert: (game scoreOf: rodri) equals: 16
+	self assert: (ranking playerAtPosition: 1) equals: fran.
+	self assert: (ranking playerAtPosition: 2) equals: rodri.
+	self assert: (ranking scoreOf: fran) equals: 24.
+	self assert: (ranking scoreOf: rodri) equals: 16
 ]
