@@ -16,7 +16,6 @@ Overload >> name [
 
 { #category : #playing }
 Overload >> player: aPlayer cancelEffectTo: anotherPlayer on: aGame [
-	aGame assertIsTurnOf: aPlayer.
 	aGame modifyCardEffectAdvanceNumberOf: anotherPlayer with: 2
 ]
 

@@ -17,7 +17,10 @@ RandomEffectCreator >> giveMeAnEffect: aNumber [
 		at: (69 to: 88) put: [ SpeedUp new ];
 		at: (89 to: 98) put: [ MoonWalk goBack: (randomMoonWalkNumber nextInt: 100) ];
 		at: (99 to: 100) put: [ AtomicBomb new ].
-	distribution keys detect: [ :interval | interval includes: aNumber ] ifFound: [ :foundInterval | ^ (distribution at: foundInterval) value ]
+	distribution keys
+		detect: [ :interval | interval includes: aNumber ]
+		ifFound: [ :foundInterval | ^ (distribution at: foundInterval) value ]
+		ifNone: [ AssertionFailure signal: 'value not found' ]
 ]
 
 { #category : #initialization }

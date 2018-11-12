@@ -16,7 +16,6 @@ Speed >> name [
 
 { #category : #playing }
 Speed >> player: aPlayer cancelEffectTo: anotherPlayer on: aGame [
-	aGame assertIsTurnOf: aPlayer.
 	aGame modifyCardEffectGoBackNumberOf: anotherPlayer with: 1.
 ]
 

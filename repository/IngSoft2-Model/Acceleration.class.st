@@ -16,7 +16,6 @@ Acceleration >> name [
 
 { #category : #playing }
 Acceleration >> player: aPlayer cancelEffectTo: anotherPlayer on: aGame [
-	aGame assertIsTurnOf: aPlayer.
 	aGame players do: [ :player | aGame modifyCardEffectGoBackNumberOf: player with: 1 ]
 ]
 
