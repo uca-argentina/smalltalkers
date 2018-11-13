@@ -26,10 +26,18 @@ Player >> addCard: aCard [
 ]
 
 { #category : #playing }
+Player >> cancellationRedoTargetIs: aTarget [
+	cardCollection
+		detect: [ :each | each name = 'Redo' ]
+		ifFound: [ :found | found selectCardTarget: aTarget ]
+		ifNone: [ AssertionFailure signal: 'You dont have Redo Card' ]
+]
+
+{ #category : #playing }
 Player >> cancellationTargetIs: aTarget [
 	cardCollection
 		detect: [ :each | each name = 'Cancellation' ]
-		ifFound: [ :found | found selectTarget: aTarget ]
+		ifFound: [ :found | found selectCardTarget: aTarget ]
 		ifNone: [ AssertionFailure signal: 'You dont have Cancellation Card' ]
 ]
 

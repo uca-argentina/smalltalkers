@@ -2,8 +2,7 @@ Class {
 	#name : #Redo,
 	#superclass : #Card,
 	#instVars : [
-		'cards',
-		'target'
+		'cards'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -28,5 +27,14 @@ Redo >> name [
 Redo >> player: aPlayer useAgainst: anotherPlayer on: aGame [
 	| effect |
 	effect := aGame cardsHistory last effect.
-	cards detect: [ :each | each name = effect ] ifFound: [ :found | found player: aGame turn useAgainst: anotherPlayer on: aGame ]
+	cards
+		detect: [ :each | each name = effect ]
+		ifFound: [ :found | 
+			found selectCardTarget: target.
+			found player: aGame turn useAgainst: anotherPlayer on: aGame ]
+]
+
+{ #category : #assigning }
+Redo >> selectCardTarget: aCardName [
+	target := aCardName
 ]

@@ -2,7 +2,6 @@ Class {
 	#name : #Cancellation,
 	#superclass : #InstantaneousCard,
 	#instVars : [
-		'target',
 		'permanentCards'
 	],
 	#category : #'IngSoft2-Model'
@@ -19,7 +18,7 @@ Cancellation >> initialize [
 		add: Speed new.
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 Cancellation >> name [
 	^ name
 ]
@@ -35,7 +34,7 @@ Cancellation >> player: aPlayer useAgainst: anotherPlayer on: aGame [
 					found player: aPlayer cancelEffectTo: anotherPlayer on: aGame ] ]
 ]
 
-{ #category : #accessing }
-Cancellation >> selectTarget: aCardName [
+{ #category : #assigning }
+Cancellation >> selectCardTarget: aCardName [
 	target := aCardName
 ]
