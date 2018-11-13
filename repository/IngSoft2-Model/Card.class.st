@@ -2,7 +2,8 @@ Class {
 	#name : #Card,
 	#superclass : #Object,
 	#instVars : [
-		'name'
+		'name',
+		'target'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -10,4 +11,9 @@ Class {
 { #category : #playing }
 Card >> player: aPlayer useAgainst: anotherPlayer on: aGame [
 	self subclassResponsibility
+]
+
+{ #category : #assigning }
+Card >> selectCardTarget: aCardName [ 
+	^ self subclassResponsibility
 ]

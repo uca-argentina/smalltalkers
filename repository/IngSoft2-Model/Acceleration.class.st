@@ -24,3 +24,8 @@ Acceleration >> player: aPlayer useAgainst: anotherPlayer on: aGame [
 	aGame assertIsTurnOf: aPlayer.
 	aGame players do: [ :player | aGame modifyCardEffectAdvanceNumberOf: player with: 1 ]
 ]
+
+{ #category : #assigning }
+Acceleration >> selectCardTarget: aCardName [
+	target := aCardName
+]

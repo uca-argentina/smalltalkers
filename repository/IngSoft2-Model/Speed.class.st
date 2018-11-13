@@ -24,3 +24,8 @@ Speed >> player: aPlayer useAgainst: anotherPlayer on: aGame [
 	aGame assertIsTurnOf: aPlayer.
 	aGame modifyCardEffectAdvanceNumberOf: anotherPlayer with: 1
 ]
+
+{ #category : #assigning }
+Speed >> selectCardTarget: aCardName [
+	target := aCardName
+]

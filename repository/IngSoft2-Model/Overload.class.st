@@ -24,3 +24,8 @@ Overload >> player: aPlayer useAgainst: anotherPlayer on: aGame [
 	aGame assertIsTurnOf: aPlayer.
 	aGame modifyCardEffectGoBackNumberOf: anotherPlayer with: 2
 ]
+
+{ #category : #assigning }
+Overload >> selectCardTarget: aCardName [
+	target := aCardName
+]

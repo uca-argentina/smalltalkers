@@ -138,13 +138,14 @@ GameSmalltalkers >> player: aPlayer targetForCancellationCardIs: aTarget [
 ]
 
 { #category : #playing }
+GameSmalltalkers >> player: aPlayer targetForRedoCancellationCardIs: aTarget [
+	aPlayer cancellationRedoTargetIs: aTarget
+]
+
+{ #category : #playing }
 GameSmalltalkers >> player: aPlayer useCard: aCardName against: anotherPlayer [
-	players
-		detect: [ :each | each = aPlayer ]
-		ifFound: [ :found | 
-			(found useCardNamed: aCardName) player: found useAgainst: anotherPlayer on: self.
-			found removeCard: aCardName ]
-		ifNone: [ AssertionFailure signal: 'This player is not part of the game' ].
+	(aPlayer useCardNamed: aCardName) player: aPlayer useAgainst: anotherPlayer on: self.
+	aPlayer removeCard: aCardName. 
 	aCardName = 'Redo'
 		ifFalse: [ cardsHistory add: (CardHistory from: aPlayer to: anotherPlayer with: aCardName) ]
 ]
