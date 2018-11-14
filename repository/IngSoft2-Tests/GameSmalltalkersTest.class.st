@@ -5,17 +5,15 @@ Class {
 		'rodri',
 		'fran',
 		'players',
-		'dice',
-		'chargedStrategy',
-		'diceCollection'
+		'diceCollection',
+		'dice'
 	],
 	#category : #'IngSoft2-Tests'
 }
 
 { #category : #'test-support' }
 GameSmalltalkersTest >> gamedWithDiceSequence: diceSequence andEffectSequence: effectSequence [
-	chargedStrategy := LoadedStrategy withSequence: diceSequence.
-	dice := Dice faces: 4 withStrategy: chargedStrategy.
+	dice := Dice faces: 4 withStrategy: (LoadedStrategy withSequence: diceSequence).
 	diceCollection := OrderedCollection new
 		add: dice;
 		add: dice;
