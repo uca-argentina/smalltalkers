@@ -11,25 +11,21 @@ Class {
 
 { #category : #'test-support' }
 BoardTest >> gameWithDiceRolling: effectsCollection [
-	| chargedStrategy dice diceCollection board game|
-	chargedStrategy := LoadedStrategy withSequence: #(1 3 5 7).
-	dice := Dice faces: 4 withStrategy: chargedStrategy.
-	diceCollection := OrderedCollection new.
-	diceCollection
+	| dice diceCollection|
+	dice := Dice faces: 4 withStrategy: (LoadedStrategy withSequence: #(1 3 5 7)).
+	diceCollection := OrderedCollection new
 		add: dice;
-		add: dice.
-	board := Board effects: effectsCollection.
-	game := GameSmalltalkers
+		add: dice;
+		yourself.
+	^ GameSmalltalkers
 		playedBy: players
-		onBoard: board
+		onBoard: (Board effects: effectsCollection)
 		withDices: diceCollection
 		withWinningLaps: 1.
-	^ game
 ]
 
 { #category : #running }
 BoardTest >> setUp [
-	players := OrderedCollection new.
 	rodri := Player named: 'Rodri' with: 'asd'.
 	fran := Player named: 'Fran' with: 'asd'.
 	players := OrderedCollection new

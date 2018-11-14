@@ -14,20 +14,17 @@ Class {
 
 { #category : #'test-support' }
 GameSmalltalkersTest >> gamedWithDiceSequence: diceSequence andEffectSequence: effectSequence [
-	|game board |
 	chargedStrategy := LoadedStrategy withSequence: diceSequence.
 	dice := Dice faces: 4 withStrategy: chargedStrategy.
 	diceCollection := OrderedCollection new
 		add: dice;
 		add: dice;
 		yourself.
-	board := Board effects: effectSequence.
-	game := GameSmalltalkers
+	^ GameSmalltalkers
 		playedBy: players
-		onBoard: board
+		onBoard: (Board effects: effectSequence)
 		withDices: diceCollection
 		withWinningLaps: 2.
-	^ game
 ]
 
 { #category : #running }
@@ -510,9 +507,10 @@ GameSmalltalkersTest >> testPlayingGameWithPermanentCardEffectsOnly [
 
 { #category : #tests }
 GameSmalltalkersTest >> testPlayingGameWithRedoCard [
-	| game effectSequence addRedoCard addAccelerationCard withoutEffect |
+	| game effectSequence addRedoCard addAccelerationCard withoutEffect addRepeatCard |
 	withoutEffect := WithoutEffect new.
 	addRedoCard := AddRedoCard new.
+	addRepeatCard := AddRepeatCard new.
 	addAccelerationCard := AddAccelerationCard new.
 	effectSequence := OrderedCollection new
 		add: withoutEffect;
@@ -532,7 +530,7 @@ GameSmalltalkersTest >> testPlayingGameWithRedoCard [
 		add: withoutEffect;
 		add: withoutEffect;
 		add: withoutEffect;
-		add: withoutEffect;
+		add: addRepeatCard;
 		add: withoutEffect;
 		add: withoutEffect;
 		add: withoutEffect;
@@ -567,7 +565,11 @@ GameSmalltalkersTest >> testPlayingGameWithRedoCard [
 	self assert: (game positionOf: rodri) equals: 21.
 	game player: rodri useCard: 'Redo' against: 'all'.
 	game play: fran.
-	self assert: (game positionOf: fran) equals: 17
+	self assert: (game positionOf: fran) equals: 17.
+	self assert: (game positionOf: rodri) equals: 21.
+	game player: fran useCard: 'Repeat' against: rodri.
+	self assert: (game positionOf: fran) equals: 17.
+	self assert: (game positionOf: rodri) equals: 21
 ]
 
 { #category : #tests }
@@ -636,23 +638,25 @@ GameSmalltalkersTest >> testPlayingGameWithRedoCardAndCancellation [
 
 { #category : #tests }
 GameSmalltalkersTest >> testPlayingGameWithRepeatCard [
-	| game effectSequence speedUp withoutEffect addRepeatCard |
+	| game effectSequence speedUp withoutEffect addRepeatCard wormHole atomicBomb |
 	addRepeatCard := AddRepeatCard new.
 	withoutEffect := WithoutEffect new.
 	speedUp := SpeedUp new.
+	wormHole := WormHole new.
+	atomicBomb := AtomicBomb new.
 	effectSequence := OrderedCollection new
-		add: withoutEffect;
-		add: withoutEffect;
-		add: withoutEffect;
+		add: addRepeatCard;
+		add: addRepeatCard;
+		add: addRepeatCard;
 		add: addRepeatCard;
 		add: speedUp;
+		add: addRepeatCard;
+		add: addRepeatCard;
 		add: withoutEffect;
 		add: withoutEffect;
-		add: withoutEffect;
-		add: withoutEffect;
-		add: withoutEffect;
-		add: withoutEffect;
-		add: withoutEffect;
+		add: atomicBomb;
+		add: atomicBomb;
+		add: atomicBomb;
 		add: speedUp;
 		add: withoutEffect;
 		add: withoutEffect;
@@ -660,9 +664,9 @@ GameSmalltalkersTest >> testPlayingGameWithRepeatCard [
 		add: withoutEffect;
 		add: withoutEffect;
 		add: withoutEffect;
-		add: withoutEffect;
-		add: withoutEffect;
-		add: withoutEffect;
+		add: wormHole;
+		add: wormHole;
+		add: wormHole;
 		add: withoutEffect;
 		add: withoutEffect;
 		yourself.
@@ -685,7 +689,25 @@ GameSmalltalkersTest >> testPlayingGameWithRepeatCard [
 	game player: fran useCard: 'Repeat' against: rodri.
 	self assert: (game positionOf: rodri) equals: 20.
 	game play: fran.
-	self assert: (game positionOf: fran) equals: 6
+	self assert: (game positionOf: fran) equals: 6.
+	self assert: (game positionOf: rodri) equals: 20.
+	game play: rodri.
+	self assert: (game positionOf: rodri) equals: 0.
+	self assert: (game lapsOf: rodri) equals: 1.
+	game player: rodri useCard: 'Repeat' against: rodri.
+	self assert: (game positionOf: rodri) equals: 0.
+	game play: fran.
+	self assert: (game positionOf: fran) equals: 0.
+	self assert: (game lapsOf: fran) equals: 0.
+	self assert: (game positionOf: rodri) equals: 0.
+	game play: rodri.
+	self assert: (game positionOf: rodri) equals: 8.
+	self assert: (game lapsOf: rodri) equals: 1.
+	game player: fran useCard: 'Repeat' against: rodri.
+	self assert: (game positionOf: rodri) equals: 12.
+	self assert: (game lapsOf: rodri) equals: 1.
+	self assert: (game positionOf: fran) equals: 0.
+	self assert: (game lapsOf: fran) equals: 0
 ]
 
 { #category : #tests }

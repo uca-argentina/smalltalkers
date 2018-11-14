@@ -6,5 +6,5 @@ Class {
 
 { #category : #applying }
 AtomicBomb >> applyTo: aPlayer on: aGame [
-	aGame players do: [ :player | aGame player: player advance: (aGame positionOf: aPlayer) negated ]
+	aGame players do: [ :player | aGame player: player advance: (aGame positionOf: player) negated ]
 ]

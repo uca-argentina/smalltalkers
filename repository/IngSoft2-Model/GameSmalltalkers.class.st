@@ -162,9 +162,7 @@ GameSmalltalkers >> positionOf: aPlayer [
 
 { #category : #accessing }
 GameSmalltalkers >> rankPlayers [
-	| ranking |
-	ranking := Ranking withPlayers: players.
-	^ ranking makeScoreOfPlayersOn: self
+	^ (Ranking withPlayers: players) makeScoreOfPlayersOn: self
 ]
 
 { #category : #playing }
