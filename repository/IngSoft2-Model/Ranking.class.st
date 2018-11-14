@@ -35,10 +35,10 @@ Ranking >> makeScoreOfPlayersOn: aGame [
 
 { #category : #accessing }
 Ranking >> playerAtPosition: aPosition [
-	^ players at: aPosition.
+	^ players at: aPosition
 ]
 
 { #category : #accessing }
 Ranking >> scoreOf: aPlayer [
-	^ playersScore at: aPlayer.
+	^ playersScore at: aPlayer
 ]

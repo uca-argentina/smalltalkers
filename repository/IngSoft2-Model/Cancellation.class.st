@@ -11,11 +11,11 @@ Class {
 Cancellation >> initialize [
 	name := 'Cancellation'.
 	target := 'none'.
-	permanentCards := OrderedCollection new.
-	permanentCards
+	permanentCards := OrderedCollection new
 		add: Acceleration new;
 		add: Overload new;
-		add: Speed new.
+		add: Speed new;
+		yourself
 ]
 
 { #category : #accessing }
@@ -26,7 +26,7 @@ Cancellation >> name [
 { #category : #playing }
 Cancellation >> player: aPlayer useAgainst: anotherPlayer on: aGame [
 	target = 'none'
-		ifTrue: [ AssertionFailure signal: 'You have to declare a target first' ]
+		ifTrue: [ GameException signal: 'You have to declare a target first' ]
 		ifFalse: [ permanentCards
 				detect: [ :each | each name = target ]
 				ifFound: [ :found | 

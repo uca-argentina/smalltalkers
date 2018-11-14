@@ -6,7 +6,7 @@ Class {
 
 { #category : #initialization }
 Overload >> initialize [
-	name := 'Overload'.
+	name := 'Overload'
 ]
 
 { #category : #accessing }

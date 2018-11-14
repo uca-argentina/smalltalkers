@@ -30,7 +30,7 @@ Player >> cancellationRedoTargetIs: aTarget [
 	cardCollection
 		detect: [ :each | each name = 'Redo' ]
 		ifFound: [ :found | found selectCardTarget: aTarget ]
-		ifNone: [ AssertionFailure signal: 'You dont have Redo Card' ]
+		ifNone: [ GameException signal: 'You dont have Redo Card' ]
 ]
 
 { #category : #playing }
@@ -38,7 +38,7 @@ Player >> cancellationTargetIs: aTarget [
 	cardCollection
 		detect: [ :each | each name = 'Cancellation' ]
 		ifFound: [ :found | found selectCardTarget: aTarget ]
-		ifNone: [ AssertionFailure signal: 'You dont have Cancellation Card' ]
+		ifNone: [ GameException signal: 'You dont have Cancellation Card' ]
 ]
 
 { #category : #initialization }
@@ -57,20 +57,15 @@ Player >> removeCard: aCardName [
 	cardCollection
 		detect: [ :each | each name = aCardName ]
 		ifFound: [ :found | cardCollection remove: found ]
-		ifNone: [ AssertionFailure signal: 'You dont have this card' ]
+		ifNone: [ GameException signal: 'You dont have this card' ]
 ]
 
 { #category : #playing }
 Player >> roll: diceCollection [
-	| rollNumber |
-	rollNumber := diceCollection sumNumbers: [ :dice | dice roll ].
-	^ rollNumber
+	^ diceCollection sumNumbers: [ :dice | dice roll ]
 ]
 
 { #category : #playing }
 Player >> useCardNamed: aName [
-	cardCollection
-		detect: [ :each | each name = aName ]
-		ifFound: [ :found | ^ found ]
-		ifNone: [ AssertionFailure signal: 'You dont have that card' ]
+	cardCollection detect: [ :each | each name = aName ] ifFound: [ :found | ^ found ] ifNone: [ GameException signal: 'You dont have that card' ]
 ]

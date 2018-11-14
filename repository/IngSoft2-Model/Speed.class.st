@@ -6,7 +6,7 @@ Class {
 
 { #category : #initialization }
 Speed >> initialize [
-	name := 'Speed'.
+	name := 'Speed'
 ]
 
 { #category : #accessing }
@@ -16,7 +16,7 @@ Speed >> name [
 
 { #category : #playing }
 Speed >> player: aPlayer cancelEffectTo: anotherPlayer on: aGame [
-	aGame modifyCardEffectGoBackNumberOf: anotherPlayer with: 1.
+	aGame modifyCardEffectGoBackNumberOf: anotherPlayer with: 1
 ]
 
 { #category : #playing }
