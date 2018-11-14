@@ -10,12 +10,12 @@ Class {
 { #category : #initialization }
 Redo >> initialize [
 	name := 'Redo'.
-	cards := OrderedCollection new.
-	cards
+	cards := OrderedCollection new
 		add: Acceleration new;
 		add: Overload new;
 		add: Speed new;
-		add: Cancellation new.
+		add: Cancellation new;
+		yourself
 ]
 
 { #category : #accessing }

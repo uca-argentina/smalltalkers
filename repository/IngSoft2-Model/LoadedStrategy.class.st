@@ -8,8 +8,15 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #asserting }
+LoadedStrategy class >> assertWithValidValueOfSequence: aSequence [
+	aSequence size <= 0
+		ifTrue: [ GameException signal: 'The sequence has a not valid size' ]
+]
+
 { #category : #'instance creation' }
 LoadedStrategy class >> withSequence: aSequence [
+	self assertWithValidValueOfSequence: aSequence.
 	^ self new initializeWithSequence: aSequence
 ]
 

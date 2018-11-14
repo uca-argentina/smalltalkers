@@ -44,7 +44,7 @@ GameSmalltalkers >> board [
 
 { #category : #accessing }
 GameSmalltalkers >> cardsHistory [
-	^ cardsHistory 
+	^ cardsHistory
 ]
 
 { #category : #playing }
@@ -57,7 +57,7 @@ GameSmalltalkers >> changeTurn [
 
 { #category : #accessing }
 GameSmalltalkers >> effectsHistory [
-	^ effectsHistory 
+	^ effectsHistory
 ]
 
 { #category : #testing }
@@ -116,11 +116,11 @@ GameSmalltalkers >> player: aPlayer addCard: aCard [
 
 { #category : #playing }
 GameSmalltalkers >> player: aPlayer advance: aNumber [
-	| current cardTotalEffects|
+	| current cardTotalEffects |
 	current := playersPositions at: aPlayer.
 	cardTotalEffects := cardEffectAdvanceNumber at: aPlayer.
-	playersPositions at: aPlayer put: (current + aNumber + cardTotalEffects) \\ board length .
-	playersLaps at: aPlayer put: (playersLaps at:aPlayer) + ((current + aNumber + cardTotalEffects) // board length).
+	playersPositions at: aPlayer put: (current + aNumber + cardTotalEffects) \\ board length.
+	playersLaps at: aPlayer put: (playersLaps at: aPlayer) + ((current + aNumber + cardTotalEffects) // board length)
 ]
 
 { #category : #playing }
@@ -145,14 +145,14 @@ GameSmalltalkers >> player: aPlayer targetForRedoCancellationCardIs: aTarget [
 { #category : #playing }
 GameSmalltalkers >> player: aPlayer useCard: aCardName against: anotherPlayer [
 	(aPlayer useCardNamed: aCardName) player: aPlayer useAgainst: anotherPlayer on: self.
-	aPlayer removeCard: aCardName. 
+	aPlayer removeCard: aCardName.
 	aCardName = 'Redo'
 		ifFalse: [ cardsHistory add: (CardHistory from: aPlayer to: anotherPlayer with: aCardName) ]
 ]
 
 { #category : #accessing }
 GameSmalltalkers >> players [
-	^ players 
+	^ players
 ]
 
 { #category : #accessing }
@@ -172,7 +172,7 @@ GameSmalltalkers >> removePlayedCardAffecting: aPlayerName with: aCardName [
 	cardsHistory
 		detect: [ :each | each targetName = aPlayerName and: each effect = aCardName ]
 		ifFound: [ :found | cardsHistory remove: found ]
-		ifNone: [ AssertionFailure signal: 'That player is not affected by that card' ]
+		ifNone: [ GameException signal: 'That player is not affected by that card' ]
 ]
 
 { #category : #accessing }

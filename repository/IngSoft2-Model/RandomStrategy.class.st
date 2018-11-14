@@ -9,7 +9,7 @@ Class {
 
 { #category : #initialization }
 RandomStrategy >> initialize [
-	rand := Random new.
+	rand := Random new
 ]
 
 { #category : #iterating }

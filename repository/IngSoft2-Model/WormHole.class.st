@@ -6,5 +6,5 @@ Class {
 
 { #category : #applying }
 WormHole >> applyTo: aPlayer on: aGame [
-	aGame player: aPlayer goBack: 4.
+	aGame player: aPlayer goBack: 4
 ]

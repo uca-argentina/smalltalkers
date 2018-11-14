@@ -6,4 +6,5 @@ Class {
 
 { #category : #applying }
 WithoutEffect >> applyTo: aPlayer on: aGame [
+	
 ]

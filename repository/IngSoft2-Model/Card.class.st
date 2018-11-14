@@ -14,6 +14,6 @@ Card >> player: aPlayer useAgainst: anotherPlayer on: aGame [
 ]
 
 { #category : #assigning }
-Card >> selectCardTarget: aCardName [ 
+Card >> selectCardTarget: aCardName [
 	^ self subclassResponsibility
 ]

@@ -43,10 +43,10 @@ BoardTest >> testApplyingAtomicBombEffect [
 	| game atomicBomb anotherAtomicBomb effectsSequence |
 	atomicBomb := AtomicBomb new.
 	anotherAtomicBomb := AtomicBomb new.
-	effectsSequence := OrderedCollection new.
-	effectsSequence
+	effectsSequence := OrderedCollection new
 		add: atomicBomb;
-		add: anotherAtomicBomb.
+		add: anotherAtomicBomb;
+		yourself.
 	game := self gameWithDiceRolling: effectsSequence.
 	game player: rodri advance: 3.
 	game player: fran advance: 4.
@@ -74,13 +74,13 @@ BoardTest >> testApplyingEffects [
 	withoutEffect := WithoutEffect new.
 	atomicBomb := AtomicBomb new.
 	moonWalk := MoonWalk goBack: 1.
-	sequence := OrderedCollection new.
-	sequence
+	sequence := OrderedCollection new
 		add: atomicBomb;
 		add: wormhole;
 		add: withoutEffect;
 		add: speedUp;
-		add: moonWalk.
+		add: moonWalk;
+		yourself.
 	game := self gameWithDiceRolling: sequence.
 	self assert: game board length equals: 5.
 	game player: rodri advance: 5.
@@ -111,11 +111,11 @@ BoardTest >> testApplyingMoonWalkEffect [
 	| game moonWalk sequence anotherMoonWalk |
 	moonWalk := MoonWalk goBack: 1.
 	anotherMoonWalk := MoonWalk goBack: 2.
-	sequence := OrderedCollection new.
-	sequence
+	sequence := OrderedCollection new
 		add: moonWalk;
 		add: anotherMoonWalk;
-		add: anotherMoonWalk.
+		add: anotherMoonWalk;
+		yourself.
 	game := self gameWithDiceRolling: sequence.
 	self assert: game board length equals: 3.
 	game player: rodri advance: 8.
@@ -140,12 +140,12 @@ BoardTest >> testApplyingMoonWalkEffect [
 BoardTest >> testApplyingSpeedUpEffect [
 	| game speedUp sequence |
 	speedUp := SpeedUp new.
-	sequence := OrderedCollection new.
-	sequence
+	sequence := OrderedCollection new
 		add: speedUp;
 		add: speedUp;
 		add: speedUp;
-		add: speedUp.
+		add: speedUp;
+		yourself.
 	game := self gameWithDiceRolling: sequence.
 	self assert: game board length equals: 4.
 	game player: rodri advance: 8.
@@ -170,11 +170,11 @@ BoardTest >> testApplyingSpeedUpEffect [
 BoardTest >> testApplyingWormHoleEffect [
 	| game wormHole sequence |
 	wormHole := WormHole new.
-	sequence := OrderedCollection new.
-	sequence
+	sequence := OrderedCollection new
 		add: wormHole;
 		add: wormHole;
-		add: wormHole.
+		add: wormHole;
+		yourself.
 	game := self gameWithDiceRolling: sequence.
 	self assert: game board length equals: 3.
 	game player: rodri advance: 8.
@@ -200,10 +200,10 @@ BoardTest >> testInstanceCreationAndAccessing [
 	| game moonWalk sequence speedUp |
 	moonWalk := MoonWalk goBack: 6.
 	speedUp := SpeedUp new.
-	sequence := OrderedCollection new.
-	sequence
+	sequence := OrderedCollection new
 		add: moonWalk;
-		add: speedUp.
+		add: speedUp;
+		yourself.
 	game := self gameWithDiceRolling: sequence.
 	self assert: game board length equals: 2
 ]
@@ -211,9 +211,12 @@ BoardTest >> testInstanceCreationAndAccessing [
 { #category : #tests }
 BoardTest >> testInstanceCreationRandomEffects [
 	| game effect sequence |
-	sequence := OrderedCollection new.
-	effect := RandomEffectCreator new.
-	sequence
+	effect := RandomEffectCreator withBoardSize: 10.
+	self
+		should: [ RandomEffectCreator withBoardSize: 0 ]
+		raise: AssertionFailure
+		withExceptionDo: [ :signal | self assert: signal messageText equals: 'You cant create a Random Creator Effects' ].
+	sequence := OrderedCollection new
 		add: effect nextEffect;
 		add: effect nextEffect;
 		add: effect nextEffect;
@@ -223,7 +226,8 @@ BoardTest >> testInstanceCreationRandomEffects [
 		add: effect nextEffect;
 		add: effect nextEffect;
 		add: effect nextEffect;
-		add: effect nextEffect.
-	game := self gameWithDiceRolling: sequence.
+		add: effect nextEffect;
+		yourself.
+	 game := self gameWithDiceRolling: sequence.
 	self assert: game board length equals: 10
 ]

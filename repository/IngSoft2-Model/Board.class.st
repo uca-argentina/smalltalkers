@@ -22,21 +22,18 @@ Board class >> effects: effectsCollection [
 
 { #category : #playing }
 Board >> applyEffect: aGame to: aPlayer [
-	(self effectAt: (aGame positionOf: aPlayer))
-		applyTo: aPlayer
-		on: aGame
+	(self effectAt: (aGame positionOf: aPlayer)) applyTo: aPlayer on: aGame
 ]
 
 { #category : #accessing }
 Board >> effectAt: aPosition [
-	^ effects at: (aPosition + 1)
+	^ effects at: aPosition + 1
 ]
 
 { #category : #initialization }
 Board >> initializeWithEffects: effectsCollection [
 	length := effectsCollection size.
-	effects  := effectsCollection.
-	
+	effects := effectsCollection
 ]
 
 { #category : #accessing }

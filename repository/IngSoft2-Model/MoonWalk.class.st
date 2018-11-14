@@ -21,5 +21,5 @@ MoonWalk >> applyTo: aPlayer on: aGame [
 
 { #category : #initialization }
 MoonWalk >> initializeWithGoBack: aNumber [
-	goBack:= aNumber.
+	goBack := aNumber
 ]

@@ -6,7 +6,7 @@ Class {
 
 { #category : #initialization }
 Acceleration >> initialize [
-	name := 'Acceleration'.
+	name := 'Acceleration'
 ]
 
 { #category : #accessing }
