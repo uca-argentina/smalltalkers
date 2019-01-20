@@ -2,7 +2,6 @@ Class {
 	#name : #Card,
 	#superclass : #Object,
 	#instVars : [
-		'name',
 		'target'
 	],
 	#category : #'IngSoft2-Model'

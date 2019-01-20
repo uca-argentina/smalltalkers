@@ -11,7 +11,7 @@ Overload >> initialize [
 
 { #category : #accessing }
 Overload >> name [
-	^ name
+	^ 'Overload'
 ]
 
 { #category : #playing }

@@ -11,7 +11,7 @@ Acceleration >> initialize [
 
 { #category : #accessing }
 Acceleration >> name [
-	^ name
+	^ 'Acceleration'
 ]
 
 { #category : #playing }
