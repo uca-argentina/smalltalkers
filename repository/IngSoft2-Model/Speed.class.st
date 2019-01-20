@@ -11,7 +11,7 @@ Speed >> initialize [
 
 { #category : #accessing }
 Speed >> name [
-	^ name
+	^ 'Speed'
 ]
 
 { #category : #playing }

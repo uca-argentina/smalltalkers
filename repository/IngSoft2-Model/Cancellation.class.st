@@ -20,7 +20,7 @@ Cancellation >> initialize [
 
 { #category : #accessing }
 Cancellation >> name [
-	^ name
+	^ 'Cancellation'
 ]
 
 { #category : #playing }

@@ -11,7 +11,7 @@ Repeat >> initialize [
 
 { #category : #accessing }
 Repeat >> name [
-	^ name
+	^ 'Repeat'
 ]
 
 { #category : #playing }
