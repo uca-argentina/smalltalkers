@@ -20,7 +20,7 @@ Redo >> initialize [
 
 { #category : #accessing }
 Redo >> name [
-	^ name
+	^ 'Redo'
 ]
 
 { #category : #playing }

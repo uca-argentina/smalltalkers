@@ -146,8 +146,9 @@ GameSmalltalkers >> player: aPlayer targetForRedoCancellationCardIs: aTarget [
 GameSmalltalkers >> player: aPlayer useCard: aCardName against: anotherPlayer [
 	(aPlayer useCardNamed: aCardName) player: aPlayer useAgainst: anotherPlayer on: self.
 	aPlayer removeCard: aCardName.
+	"aCard addTo: cardsHistory to: anotherPlayer with: aCard"
 	aCardName = 'Redo'
-		ifFalse: [ cardsHistory add: (CardHistory from: aPlayer to: anotherPlayer with: aCardName) ]
+		ifFalse: [ cardsHistory add: (CardHistory to: anotherPlayer with: aCardName) ]
 ]
 
 { #category : #accessing }
